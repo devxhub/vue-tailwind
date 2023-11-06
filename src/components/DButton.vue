@@ -48,7 +48,3 @@ const buttonClasses = computed(() => `rounded ${colorClasses.value} ${sizeClasse
 
 const onClick = () => emit('click');
 </script>
-
-<style scoped>
-/* Add any additional styles here */
-</style>
