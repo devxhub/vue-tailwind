@@ -50,3 +50,10 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+## NPM | [vue-tailwind](https://github.com/devxhub/vue-tailwind/pkgs/npm/vue-tailwind)
+### Login to NPM Github registry
+```sh
+npm login --scope=@devxhub --auth-type=legacy --registry=https://npm.pkg.github.com
+```
+- Enter Github username
+- Enter Github personal access token (classic) with at least `read:packages` scope
