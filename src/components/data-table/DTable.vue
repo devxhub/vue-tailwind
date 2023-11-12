@@ -85,7 +85,7 @@
               class="!bh-bg-white bh-h-11 !bh-border-transparent"
             >
               <td :colspan="props.columns.length + 1" class="!bh-p-0 !bh-border-transparent">
-                <div class="bh-skeleton-box bh-h-8"></div>
+                <div class="bh-skeleton-box bh-h-6"></div>
               </td>
             </tr>
           </template>
@@ -231,9 +231,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, useSlots, watch } from 'vue'
-import columnHeader from './data-table/column-header.vue'
-import iconCheck from './data-table/icon-check.vue'
-import iconLoader from './data-table/icon-loader.vue'
+import columnHeader from './column-header.vue'
+import iconCheck from '../../assets/icons/icon-check.vue'
+import iconLoader from '../../assets/icons/icon-loader.vue'
 
 const slots = useSlots()
 
