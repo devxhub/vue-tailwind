@@ -13,9 +13,11 @@
             :currentSortDirection="currentSortDirection"
             :isOpenFilter="isOpenFilter"
             :checkAll="selectedAll"
+            :columnFilterLang="props.columnFilterLang"
             @selectAll="selectAll"
             @sortChange="sortChange"
             @filterChange="filterChange"
+            class="alt-pagination"
             @toggleFilterMenu="toggleFilterMenu"
           />
         </thead>
@@ -85,7 +87,7 @@
               class="!bh-bg-white bh-h-11 !bh-border-transparent"
             >
               <td :colspan="props.columns.length + 1" class="!bh-p-0 !bh-border-transparent">
-                <div class="bh-skeleton-box bh-h-6"></div>
+                <div class="bh-skeleton-box bh-h-8"></div>
               </td>
             </tr>
           </template>
@@ -230,12 +232,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useSlots, watch } from 'vue'
+import { computed, onMounted, Ref, ref, useSlots, watch } from 'vue'
 import columnHeader from './column-header.vue'
 import iconCheck from '../../assets/icons/icon-check.vue'
 import iconLoader from '../../assets/icons/icon-loader.vue'
 
 const slots = useSlots()
+
+export interface colDef {
+  isUnique?: boolean
+  field?: string
+  title?: string
+  value?: any
+  condition?: any
+  type?: string // string|date|number|bool
+  width?: string | undefined
+  minWidth?: string | undefined
+  maxWidth?: string | undefined
+  hide?: boolean
+  filter?: boolean // column filter
+  search?: boolean // global search
+  sort?: boolean
+  html?: boolean
+  cellRenderer?: [Function, string]
+  headerClass?: string
+  cellClass?: string
+}
 
 interface Props {
   loading?: boolean
@@ -243,7 +265,7 @@ interface Props {
   skin?: string
   totalRows?: number
   rows?: Array<any>
-  columns?: Array<any>
+  columns?: Array<colDef>
   hasCheckbox?: boolean
   search?: string
   columnChooser?: boolean
@@ -251,12 +273,13 @@ interface Props {
   pageSize?: number // default: 10
   pageSizeOptions?: Array<number> // default: [10, 20, 30, 50, 100]
   showPageSize?: boolean
-  rowClass?: any
-  cellClass?: any
+  rowClass?: [Array<string>, Function]
+  cellClass?: [Array<string>, Function]
   sortable?: boolean
   sortColumn?: string
   sortDirection?: string
   columnFilter?: boolean
+  columnFilterLang?: Record<string, string> | null
   pagination?: boolean
   showNumbers?: boolean
   showNumbersCount?: number
@@ -289,13 +312,14 @@ const props = withDefaults(defineProps<Props>(), {
   pageSize: 10,
   pageSizeOptions: () => [10, 20, 30, 50, 100],
   showPageSize: true,
-  rowClass: <never>[],
-  cellClass: <never>[],
+  rowClass: <any>[],
+  cellClass: <any>[],
   cellRenderer: null,
   sortable: false,
   sortColumn: 'id',
   sortDirection: 'asc',
   columnFilter: false,
+  columnFilterLang: null,
   pagination: true,
   showNumbers: true,
   showNumbersCount: 5,
@@ -327,7 +351,7 @@ for (const item of props.columns || []) {
   item.condition = !type || type === 'string' ? 'contain' : 'equal'
 }
 
-const filterItems: any = ref([])
+const filterItems: Ref<Array<any>> = ref([])
 const currentPage = ref(props.page)
 const currentPageSize = ref(props.pagination ? props.pageSize : props.rows.length)
 const oldPageSize = props.pageSize
@@ -336,7 +360,7 @@ const oldSortColumn = props.sortColumn
 const currentSortDirection = ref(props.sortDirection)
 const oldSortDirection = props.sortDirection
 const filterRowCount = ref(props.totalRows)
-const selected: any = ref([])
+const selected: Ref<Array<any>> = ref([])
 const selectedAll: any = ref(null)
 const currentLoader = ref(props.loading)
 const currentSearch = ref(props.search)
@@ -346,8 +370,8 @@ const isOpenFilter: any = ref(null)
 
 // row click
 const timer: any = ref(null)
-let clickCount: any = ref(0)
-const delay: any = ref(230)
+let clickCount: Ref<number> = ref(0)
+const delay: Ref<number> = ref(230)
 
 onMounted(() => {
   filterRows()
@@ -384,6 +408,9 @@ defineExpose({
   },
   isRowSelected(index: number) {
     return isRowSelected(index)
+  },
+  getFilteredRows() {
+    return filteredRows()
   }
 })
 
@@ -394,7 +421,7 @@ const stringFormat = (template: string, ...args: any[]) => {
 }
 
 const uniqueKey: any = computed(() => {
-  const col: any = props.columns.find((d) => d.isUnique)
+  const col = props.columns.find((d) => d.isUnique)
 
   return col?.field || null
 })
@@ -445,15 +472,11 @@ const paging = computed(() => {
   return pages
 })
 
-const filterRows = () => {
-  let result = []
+const filteredRows = () => {
   let rows = props.rows || []
 
-  if (props.isServerMode) {
-    filterRowCount.value = props.totalRows || 0
-    result = rows
-  } else {
-    props.columns?.forEach((d: any) => {
+  if (!props.isServerMode) {
+    props.columns?.forEach((d) => {
       if (
         d.filter &&
         ((d.value !== undefined && d.value !== null && d.value !== '') ||
@@ -606,7 +629,7 @@ const filterRows = () => {
     if (currentSearch.value && rows.length) {
       let final: Array<any> = []
 
-      const keys: any = (props.columns || [])
+      const keys = (props.columns || [])
         .filter((d) => d.search && !d.hide)
         .map((d) => {
           return d.field
@@ -646,9 +669,20 @@ const filterRows = () => {
 
       return collator.compare(valA, valB) * sortOrder
     })
+  }
 
+  return rows
+}
+
+const filterRows = () => {
+  let result = []
+  let rows = filteredRows()
+
+  if (props.isServerMode) {
+    filterRowCount.value = props.totalRows || 0
+    result = rows
+  } else {
     filterRowCount.value = rows.length || 0
-
     result = rows.slice(offset.value - 1, <number>limit.value)
   }
 
@@ -661,7 +695,7 @@ watch(
   }
 )
 
-const toggleFilterMenu = (col: any) => {
+const toggleFilterMenu = (col: colDef) => {
   if (col) {
     if (isOpenFilter.value === col.field) {
       isOpenFilter.value = null
@@ -764,7 +798,7 @@ const checkboxChange = (value: any) => {
   selectedAll.value =
     value.length && filterItems.value.length && value.length === filterItems.value.length
 
-  const rows = filterItems.value.filter((d: { [x: string]: any }, i: any) =>
+  const rows = filterItems.value.filter((d, i) =>
     selected.value.includes(uniqueKey.value ? d[uniqueKey.value as never] : i)
   )
 
@@ -773,7 +807,7 @@ const checkboxChange = (value: any) => {
 watch(() => selected.value, checkboxChange)
 const selectAll = (checked: any) => {
   if (checked) {
-    selected.value = filterItems.value.map((d: { [x: string]: any }, i: any) =>
+    selected.value = filterItems.value.map((d, i) =>
       uniqueKey.value ? d[uniqueKey.value as never] : i
     )
   } else {
@@ -816,15 +850,16 @@ const changeSearch = () => {
     emit('searchChange', currentSearch.value)
   }
 }
-watch(() => props.search, changeSearch)
+
 watch(
   () => props.search,
   () => {
     currentSearch.value = props.search
+    changeSearch()
   }
 )
 
-const cellValue = (item: any, field: string) => {
+const cellValue = (item: any, field: string | undefined) => {
   return field?.split('.').reduce((obj, key) => obj?.[key], item)
 }
 
@@ -936,7 +971,7 @@ const reset = () => {
   }
 }
 const getSelectedRows = () => {
-  const rows = filterItems.value.filter((d: { [x: string]: any }, i: any) =>
+  const rows = filterItems.value.filter((d, i) =>
     selected.value.includes(uniqueKey.value ? d[uniqueKey.value as never] : i)
   )
   return rows
@@ -949,20 +984,20 @@ const clearSelectedRows = () => {
 }
 const selectRow = (index: number) => {
   if (!isRowSelected(index)) {
-    const rows = filterItems.value.find((d: any, i: number) => i === index)
+    const rows = filterItems.value.find((d, i) => i === index)
     selected.value.push(uniqueKey.value ? rows[uniqueKey.value as never] : index)
   }
 }
 const unselectRow = (index: number) => {
   if (isRowSelected(index)) {
-    const rows = filterItems.value.find((d: any, i: number) => i === index)
+    const rows = filterItems.value.find((d, i) => i === index)
     selected.value = selected.value.filter(
-      (d: any) => d !== (uniqueKey.value ? rows[uniqueKey.value as never] : index)
+      (d) => d !== (uniqueKey.value ? rows[uniqueKey.value as never] : index)
     )
   }
 }
 const isRowSelected = (index: number) => {
-  const rows = filterItems.value.find((d: any, i: number) => i === index)
+  const rows = filterItems.value.find((d, i) => i === index)
 
   if (rows) {
     return selected.value.includes(uniqueKey.value ? rows[uniqueKey.value as never] : index)
@@ -1029,6 +1064,9 @@ const isRowSelected = (index: number) => {
 :before {
   border: 0 solid #0000;
   box-sizing: border-box;
+}
+.alt-pagination .bh-pagination .bh-page-item {
+  @apply !w-max min-w-[32px] !rounded;
 }
 .bh-table-responsive {
   position: relative;
