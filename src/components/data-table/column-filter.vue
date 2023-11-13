@@ -166,8 +166,10 @@ const close = () => {
 }
 
 const select = (condition: any) => {
+  // eslint-disable-next-line vue/no-mutating-props
   props.column.condition = condition
   if (condition === '') {
+    // eslint-disable-next-line vue/no-mutating-props
     props.column.value = ''
   }
 

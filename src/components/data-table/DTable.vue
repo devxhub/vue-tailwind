@@ -232,32 +232,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, Ref, ref, useSlots, watch } from 'vue'
+import { computed, onMounted, type Ref, ref, useSlots, watch } from 'vue'
 import columnHeader from './column-header.vue'
 import iconCheck from '../../assets/icons/icon-check.vue'
 import iconLoader from '../../assets/icons/icon-loader.vue'
 
 const slots = useSlots()
-
-export interface colDef {
-  isUnique?: boolean
-  field?: string
-  title?: string
-  value?: any
-  condition?: any
-  type?: string // string|date|number|bool
-  width?: string | undefined
-  minWidth?: string | undefined
-  maxWidth?: string | undefined
-  hide?: boolean
-  filter?: boolean // column filter
-  search?: boolean // global search
-  sort?: boolean
-  html?: boolean
-  cellRenderer?: [Function, string]
-  headerClass?: string
-  cellClass?: string
-}
 
 interface Props {
   loading?: boolean
@@ -265,7 +245,7 @@ interface Props {
   skin?: string
   totalRows?: number
   rows?: Array<any>
-  columns?: Array<colDef>
+  columns?: Array<any>
   hasCheckbox?: boolean
   search?: string
   columnChooser?: boolean
@@ -273,8 +253,8 @@ interface Props {
   pageSize?: number // default: 10
   pageSizeOptions?: Array<number> // default: [10, 20, 30, 50, 100]
   showPageSize?: boolean
-  rowClass?: [Array<string>, Function]
-  cellClass?: [Array<string>, Function]
+  rowClass?: any
+  cellClass?: any
   sortable?: boolean
   sortColumn?: string
   sortDirection?: string
@@ -695,7 +675,7 @@ watch(
   }
 )
 
-const toggleFilterMenu = (col: colDef) => {
+const toggleFilterMenu = (col: any) => {
   if (col) {
     if (isOpenFilter.value === col.field) {
       isOpenFilter.value = null
@@ -805,8 +785,8 @@ const checkboxChange = (value: any) => {
   emit('rowSelect', rows)
 }
 watch(() => selected.value, checkboxChange)
-const selectAll = (checked: any) => {
-  if (checked) {
+const selectAll = (value: any) => {
+  if (value.checked) {
     selected.value = filterItems.value.map((d, i) =>
       uniqueKey.value ? d[uniqueKey.value as never] : i
     )
