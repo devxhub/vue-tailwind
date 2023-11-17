@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FooterPagination.vue > renders correctly 1`] = `
+"<div class=\\"bh-pagination bh-py-5\\">
+  <div class=\\"bh-flex bh-items-center bh-flex-wrap bh-flex-col sm:bh-flex-row bh-gap-4\\">
+    <div class=\\"bh-pagination-info bh-flex bh-items-center\\"><span class=\\"bh-mr-2\\">Showing 1 to 10 of 100 entries</span><select class=\\"bh-pagesize\\">
+        <option value=\\"10\\">10</option>
+        <option value=\\"20\\">20</option>
+        <option value=\\"30\\">30</option>
+      </select></div>
+    <div class=\\"bh-pagination-number sm:bh-ml-auto bh-inline-flex bh-items-center bh-space-x-1\\"><button type=\\"button\\" class=\\"bh-page-item first-page disabled\\"><svg aria-hidden=\\"true\\" width=\\"14\\" height=\\"14\\" viewBox=\\"0 0 16 16\\">
+          <g fill=\\"currentColor\\" fill-rule=\\"evenodd\\">
+            <path d=\\"M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z\\"></path>
+            <path d=\\"M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z\\"></path>
+          </g>
+        </svg></button><button type=\\"button\\" class=\\"bh-page-item previous-page disabled\\"><svg aria-hidden=\\"true\\" width=\\"14\\" height=\\"14\\" viewBox=\\"0 0 16 16\\">
+          <path fill=\\"currentColor\\" fill-rule=\\"evenodd\\" d=\\"M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z\\"></path>
+        </svg></button><button type=\\"button\\" class=\\"bh-page-item disabled bh-active\\">1</button><button type=\\"button\\" class=\\"bh-page-item\\">2</button><button type=\\"button\\" class=\\"bh-page-item\\">3</button><button type=\\"button\\" class=\\"bh-page-item\\">4</button><button type=\\"button\\" class=\\"bh-page-item\\">5</button><button type=\\"button\\" class=\\"bh-page-item next-page\\"><svg aria-hidden=\\"true\\" width=\\"14\\" height=\\"14\\" viewBox=\\"0 0 16 16\\">
+          <path fill=\\"currentColor\\" fill-rule=\\"evenodd\\" d=\\"M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8L4.646 2.354a.5.5 0 0 1 0-.708z\\"></path>
+        </svg></button><button type=\\"button\\" class=\\"bh-page-item last-page\\"><svg aria-hidden=\\"true\\" width=\\"14\\" height=\\"14\\" viewBox=\\"0 0 16 16\\">
+          <g fill=\\"currentColor\\" fill-rule=\\"evenodd\\">
+            <path d=\\"M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8L3.646 2.354a.5.5 0 0 1 0-.708z\\"></path>
+            <path d=\\"M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8L7.646 2.354a.5.5 0 0 1 0-.708z\\"></path>
+          </g>
+        </svg></button></div>
+  </div>
+</div>"
+`;

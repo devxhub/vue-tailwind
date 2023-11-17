@@ -12,7 +12,7 @@
       }"
     >
       <div class="bh-checkbox">
-        <input ref="selectedAll" type="checkbox" @click.stop="emit('selectAll', $event?.target)" />
+        <input ref="selectedAll" id="select" type="checkbox" @click.stop="emit('selectAll', $event?.target)" />
         <div>
           <icon-check class="check" />
           <icon-dash class="intermediate" />
