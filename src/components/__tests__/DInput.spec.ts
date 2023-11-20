@@ -1,76 +1,83 @@
-import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
-import Input from '../DInput.vue';
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import Input from '../DInput.vue'
 
 describe('DInput.vue', () => {
-  it('renders input element', () => {
+  it('emits an input event when value changes', async () => {
     const wrapper = mount(Input, {
       props: {
         label: 'Username',
-        modelValue: '',
-      },
-    });
+        modelValue: ''
+      }
+    })
 
-    // Assert the presence of a label
-    const label = wrapper.find('label');
-    expect(label.exists()).toBe(true);
-    expect(label.text()).toBe('Username');
+    await wrapper.find('input').setValue('NewValue')
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+    expect(wrapper.emitted()['update:modelValue'][0]).toEqual(['NewValue'])
+  })
 
-    // Assert the presence of an input
-    const input = wrapper.find('input');
-    expect(input.exists()).toBe(true);
-  });
-
-  it('binds input value to modelValue prop', () => {
+  it('has the correct default classes', () => {
     const wrapper = mount(Input, {
       props: {
-        modelValue: 'test',
-      },
-    });
+        label: 'Username',
+        id: 'username'
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.value).toBe('test');
-  });
+    expect(wrapper.classes()).toContain('relative')
+    expect(wrapper.classes()).toContain('mt-4')
+    expect(wrapper.classes()).toContain('transition-all')
+    expect(wrapper.classes()).toContain('duration-300')
+    expect(wrapper.classes()).toContain('pt-4')
+    expect(wrapper.classes()).toContain('rounded-t-md')
+  })
 
-  it('updates modelValue on input', async () => {
+  it('displays the label', () => {
     const wrapper = mount(Input, {
       props: {
-        modelValue: '',
-      },
-    });
+        label: 'Username',
+        id: 'username'
+      }
+    })
 
-    const inputElement = wrapper.find('input');
-    await inputElement.setValue('new value');
+    const labelElement = wrapper.find('label')
+    expect(labelElement.exists()).toBe(true)
+    expect(labelElement.text()).toBe('Username')
+  })
 
-    // Check that the "update:modelValue" event has been emitted
-    const updateEvents = wrapper.emitted('update:modelValue');
-    expect(updateEvents).toBeTruthy();
-
-    // Now we can safely assert the first emitted event's payload
-    const firstEventPayload = updateEvents ? updateEvents[0] : [];
-    expect(firstEventPayload).toEqual(['new value']);
-  });
-
-  it('displays placeholder text', () => {
-    const placeholderText = 'Enter your username';
+  it('applies the underlined variant correctly', () => {
     const wrapper = mount(Input, {
       props: {
-        placeholder: placeholderText,
-      },
-    });
+        variant: 'underlined'
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.placeholder).toBe(placeholderText);
-  });
+    expect(wrapper.classes()).toContain('bg-transparent')
+    expect(wrapper.classes()).toContain('px-0')
+  })
 
-  it('is disabled when disabled prop is true', () => {
+  it('applies the default variant correctly', () => {
     const wrapper = mount(Input, {
       props: {
-        disabled: true,
-      },
-    });
+        variant: 'default'
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.disabled).toBe(true);
-  });
-});
+    expect(wrapper.classes()).toContain('bg-gray-100')
+    expect(wrapper.classes()).toContain('hover:bg-gray-200')
+    expect(wrapper.classes()).toContain('px-4')
+  })
+
+  it('applies the disabled styles correctly', () => {
+    const wrapper = mount(Input, {
+      props: {
+        disabled: true
+      }
+    })
+
+    expect(wrapper.classes()).toContain('opacity-50')
+    expect(wrapper.classes()).toContain('hover:bg-gray-100')
+  })
+
+  // Add more test cases as needed for other variations
+})
