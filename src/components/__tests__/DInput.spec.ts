@@ -78,6 +78,4 @@ describe('DInput.vue', () => {
     expect(wrapper.classes()).toContain('opacity-50')
     expect(wrapper.classes()).toContain('hover:bg-gray-100')
   })
-
-  // Add more test cases as needed for other variations
 })
