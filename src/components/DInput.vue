@@ -47,7 +47,7 @@ const { id, modelValue, label, type, placeholder, disabled } = defineProps({
     type: String
   },
   modelValue: {
-    type: String
+    default: ''
   },
   label: {
     type: String,
@@ -70,10 +70,10 @@ const { id, modelValue, label, type, placeholder, disabled } = defineProps({
 })
 
 const inputValue = ref(modelValue)
-const isFocused = ref(modelValue !== '')
+const isFocused: any = ref(modelValue)
 
 const handleBlur = () => {
-  if (inputValue.value !== '') {
+  if (inputValue.value) {
     isFocused.value = true
   } else {
     isFocused.value = false
