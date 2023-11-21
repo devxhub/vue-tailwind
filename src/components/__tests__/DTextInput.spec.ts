@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Input from '../DInput.vue'
+import Input from '../DTextInput.vue'
 
 describe('DInput.vue', () => {
   it('emits an input event when value changes', async () => {
