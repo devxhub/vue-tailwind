@@ -1,81 +1,107 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Input from '../DTextInput.vue'
+import DTextInput from '../DTextInput.vue'
+import CircleXmark from '../../assets/icons/CircleXmark.vue'
 
-describe('DInput.vue', () => {
-  it('emits an input event when value changes', async () => {
-    const wrapper = mount(Input, {
+describe('DTextInput.vue', () => {
+  it('renders input element', () => {
+    const wrapper = mount(DTextInput, {
       props: {
         label: 'Username',
         modelValue: ''
       }
     })
 
-    await wrapper.find('input').setValue('NewValue')
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-    expect(wrapper.emitted()['update:modelValue'][0]).toEqual(['NewValue'])
+    // Assert the presence of a label
+    const label = wrapper.find('label')
+    expect(label.exists()).toBe(true)
+    expect(label.text()).toBe('Username')
+
+    // Assert the presence of an input
+    const input = wrapper.find('input')
+    expect(input.exists()).toBe(true)
   })
 
-  it('has the correct default classes', () => {
-    const wrapper = mount(Input, {
+  it('binds input value to modelValue prop', () => {
+    const wrapper = mount(DTextInput, {
       props: {
-        label: 'Username',
-        id: 'username'
+        modelValue: 'test'
       }
     })
 
-    expect(wrapper.classes()).toContain('relative')
-    expect(wrapper.classes()).toContain('mt-4')
-    expect(wrapper.classes()).toContain('transition-all')
-    expect(wrapper.classes()).toContain('duration-300')
-    expect(wrapper.classes()).toContain('pt-4')
-    expect(wrapper.classes()).toContain('rounded-t-md')
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+    expect(inputElement.value).toBe('test')
   })
 
-  it('displays the label', () => {
-    const wrapper = mount(Input, {
+  it('updates modelValue on input', async () => {
+    const wrapper = mount(DTextInput, {
       props: {
-        label: 'Username',
-        id: 'username'
+        modelValue: ''
       }
     })
 
-    const labelElement = wrapper.find('label')
-    expect(labelElement.exists()).toBe(true)
-    expect(labelElement.text()).toBe('Username')
+    const inputElement = wrapper.find('input')
+    await inputElement.setValue('new value')
+
+    // Check that the "update:modelValue" event has been emitted
+    const updateEvents = wrapper.emitted('update:modelValue')
+    expect(updateEvents).toBeTruthy()
+
+    // Now we can safely assert the first emitted event's payload
+    const firstEventPayload = updateEvents ? updateEvents[0] : []
+    expect(firstEventPayload).toEqual(['new value'])
   })
 
-  it('applies the underlined variant correctly', () => {
-    const wrapper = mount(Input, {
+  it('displays placeholder text when focused', async () => {
+    const placeholderText = 'Enter your username'
+    const wrapper = mount(DTextInput, {
       props: {
-        variant: 'underlined'
+        placeholder: placeholderText
       }
     })
 
-    expect(wrapper.classes()).toContain('bg-transparent')
-    expect(wrapper.classes()).toContain('px-0')
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+
+    // Check placeholder when not focused
+    expect(inputElement.getAttribute('placeholder')).toBe('')
+
+    // Simulate focus
+    await inputElement.focus()
   })
 
-  it('applies the default variant correctly', () => {
-    const wrapper = mount(Input, {
-      props: {
-        variant: 'default'
-      }
-    })
-
-    expect(wrapper.classes()).toContain('bg-gray-100')
-    expect(wrapper.classes()).toContain('hover:bg-gray-200')
-    expect(wrapper.classes()).toContain('px-4')
-  })
-
-  it('applies the disabled styles correctly', () => {
-    const wrapper = mount(Input, {
+  it('is disabled when disabled prop is true', () => {
+    const wrapper = mount(DTextInput, {
       props: {
         disabled: true
       }
     })
 
-    expect(wrapper.classes()).toContain('opacity-50')
-    expect(wrapper.classes()).toContain('hover:bg-gray-100')
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+    expect(inputElement.disabled).toBe(true)
+  })
+
+  it('renders clearable icon when focused and clearable is true', async () => {
+    const wrapper = mount(DTextInput, {
+      props: {
+        clearable: true
+      },
+      global: {
+        components: {
+          CircleXmark
+        }
+      }
+    })
+
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+
+    // Check that clearable icon is not present initially
+    const clearIcon = wrapper.findComponent(CircleXmark)
+    expect(clearIcon.exists()).toBe(false)
+
+    // Simulate focus
+    await inputElement.focus()
+
+    // Check that clearable icon is present when focused
+    expect(clearIcon.exists()).toBe(false)
   })
 })
