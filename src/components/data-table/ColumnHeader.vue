@@ -128,11 +128,11 @@
   </tr>
 </template>
 <script setup lang="ts">
-import { watch, ref } from 'vue'
-import columnFilter from './ColumnFilter.vue'
-import iconCheck from '../../assets/icons/icon-check.vue'
-import iconDash from '../../assets/icons/icon-dash.vue'
-import iconFilter from '../../assets/icons/icon-filter.vue'
+import { watch, ref, defineAsyncComponent } from 'vue'
+const columnFilter = defineAsyncComponent(() => import('./ColumnFilter.vue'))
+const iconCheck = defineAsyncComponent(() => import('../../assets/icons/icon-check.vue'))
+const iconDash = defineAsyncComponent(() => import('../../assets/icons/icon-dash.vue'))
+const iconFilter = defineAsyncComponent(() => import('../../assets/icons/icon-filter.vue'))
 
 const selectedAll: any = ref(null)
 
