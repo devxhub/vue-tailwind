@@ -12,7 +12,7 @@ const emit = defineEmits(['click'])
 const props = defineProps({
   color: {
     type: String as () => 'red' | 'green' | 'blue' | 'transparent' | 'white',
-    default: 'blue'
+    default: 'white'
   },
   size: {
     type: String as () => 'xs' | 'sm' | 'md' | 'lg' | 'xl',
@@ -28,39 +28,39 @@ const props = defineProps({
   },
   variant: {
     type: String as () => 'flat' | 'outlined' | 'elevated' | 'fade',
-    default: 'flat'
+    default: 'elevated'
   }
 })
 
 const colorClasses = computed(() => {
   switch (props.color) {
     case 'red':
-      return 'bg-red-500 text-white'
+      return 'bg-red-500 text-black hover:bg-opacity-75'
     case 'green':
-      return 'bg-green-500 text-white'
+      return 'bg-green-500 text-black hover:bg-opacity-75'
     case 'blue':
-      return 'bg-blue-500 text-white'
+      return 'bg-blue-500 text-black hover:bg-opacity-75'
     case 'transparent':
-      return 'bg-transparent text-black'
+      return 'bg-transparent text-black hover:bg-slate-50'
     case 'white':
-      return 'bg-white text-black'
+      return 'bg-white text-black hover:bg-slate-50'
     default:
-      return 'bg-white text-black'
+      return 'bg-white text-black hover:bg-slate-50'
   }
 })
 
 const sizeClasses = computed(() => {
   switch (props.size) {
     case 'xs':
-      return 'text-xs px-1 py-0.5'
+      return 'text-xs px-2 py-0.5'
     case 'sm':
       return 'text-sm px-2 py-1'
     case 'md':
-      return 'text-md px-4 py-2'
+      return 'text-sm px-4 py-2'
     case 'lg':
-      return 'text-lg px-6 py-3'
+      return 'text-md px-6 py-3'
     case 'xl':
-      return 'text-xl px-8 py-4'
+      return 'text-lg px-8 py-4'
     default:
       return 'text-md px-4 py-2'
   }
@@ -91,16 +91,14 @@ const borderRadiusClasses = computed(() => {
 
 const variantClasses = computed(() => {
   switch (props.variant) {
-    case 'flat':
-      return ''
     case 'outlined':
-      return 'outline outline-1'
+      return 'outline outline-1 hover:bg-slate-100'
     case 'elevated':
-      return 'drop-shadow-lg'
+      return 'drop-shadow-md hover:drop-shadow-lg'
     case 'fade':
       return 'bg-opacity-50'
     default:
-      return ''
+      return 'drop-shadow-md'
   }
 })
 
@@ -108,7 +106,7 @@ const block = computed(() => (props.block ? 'w-full' : ''))
 
 const buttonClasses = computed(
   () =>
-    `${borderRadiusClasses.value} ${colorClasses.value} ${sizeClasses.value} ${block.value} ${variantClasses.value} hover:bg-opacity-75 hover:text-opacity-100 hover:transition-all hover:duration-300`
+    `${borderRadiusClasses.value} ${colorClasses.value} ${sizeClasses.value} ${block.value} ${variantClasses.value} hover:transition-all hover:duration-300`
 )
 
 const onClick = () => emit('click')
