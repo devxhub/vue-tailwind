@@ -149,7 +149,7 @@ describe('FooterPagination.vue', () => {
       pageSizeOptions: [10, 20, 30]
     }
 
-    const wrapper = mount(FooterPagination, { props })
+    const wrapper: any = mount(FooterPagination, { props })
 
     await wrapper.find('.bh-page-item.next-page').trigger('click')
 
@@ -167,7 +167,7 @@ describe('FooterPagination.vue', () => {
       pageSizeOptions: [10, 20, 30]
     }
 
-    const wrapper = mount(FooterPagination, { props })
+    const wrapper: any = mount(FooterPagination, { props })
 
     await wrapper.find('.bh-page-item.previous-page').trigger('click')
 
@@ -185,7 +185,7 @@ describe('FooterPagination.vue', () => {
       pageSizeOptions: [10, 20, 30]
     }
 
-    const wrapper = mount(FooterPagination, { props })
+    const wrapper: any = mount(FooterPagination, { props })
 
     await wrapper.find('.bh-page-item.first-page').trigger('click')
 
