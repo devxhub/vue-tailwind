@@ -332,19 +332,19 @@ for (const item of props.columns || []) {
 }
 
 const filterItems: Ref<Array<any>> = ref([])
-const currentPage = ref(props.page)
-const currentPageSize = ref(props.pagination ? props.pageSize : props.rows.length)
-const oldPageSize = props.pageSize
-const currentSortColumn = ref(props.sortColumn)
-const oldSortColumn = props.sortColumn
-const currentSortDirection = ref(props.sortDirection)
-const oldSortDirection = props.sortDirection
-const filterRowCount = ref(props.totalRows)
+const currentPage = ref(props?.page)
+const currentPageSize = ref(props.pagination ? props?.pageSize : props?.rows?.length)
+const oldPageSize = props?.pageSize
+const currentSortColumn = ref(props?.sortColumn)
+const oldSortColumn = props?.sortColumn
+const currentSortDirection = ref(props?.sortDirection)
+const oldSortDirection = props?.sortDirection
+const filterRowCount = ref(props?.totalRows)
 const selected: Ref<Array<any>> = ref([])
 const selectedAll: any = ref(null)
-const currentLoader = ref(props.loading)
-const currentSearch = ref(props.search)
-const oldColumns = JSON.parse(JSON.stringify(props.columns))
+const currentLoader = ref(props?.loading)
+const currentSearch = ref(props?.search)
+const oldColumns = JSON.parse(JSON.stringify(props?.columns))
 
 const isOpenFilter: any = ref(null)
 
