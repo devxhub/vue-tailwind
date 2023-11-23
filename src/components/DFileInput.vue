@@ -57,7 +57,7 @@
     ></div>
     <div v-else class="border-b border-gray-600 absolute bottom-0 left-0 right-0"></div>
   </div>
-  <transition name="slide-fade">
+  <transition name="form-slide-fade">
     <div
       v-if="isFocused && hint"
       class="text-gray-500 text-sm mt-0.5"
@@ -189,19 +189,3 @@ const handleBlur = () => {
   }
 }
 </script>
-
-<style scoped>
-.slide-fade-enter-active {
-  transition: all 150ms ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 150ms cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(-15px);
-  opacity: 0;
-}
-</style>
