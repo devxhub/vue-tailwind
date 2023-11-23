@@ -1,4 +1,5 @@
 import DButton from './components/DButton.vue'
-import DTextInput from './components/DTextInput.vue'
+import DInput from './components/DInput.vue'
+import DTable from './components/DTable.vue'
 
-export default { DButton, DTextInput }
+export default { DButton, DInput, DTable }
