@@ -233,7 +233,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, type Ref, ref, useSlots, watch } from 'vue'
-import columnHeader from './column-header.vue'
+import columnHeader from './ColumnHeader.vue'
 import iconCheck from '../../assets/icons/icon-check.vue'
 import iconLoader from '../../assets/icons/icon-loader.vue'
 

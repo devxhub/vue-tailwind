@@ -12,11 +12,7 @@
       }"
     >
       <div class="bh-checkbox">
-        <input
-          ref="selectedAll"
-          type="checkbox"
-          @click.stop="emit('selectAll', $event?.target)"
-        />
+        <input ref="selectedAll" type="checkbox" @click.stop="emit('selectAll', $event?.target)" />
         <div>
           <icon-check class="check" />
           <icon-dash class="intermediate" />
@@ -118,7 +114,7 @@
             </button>
 
             <column-filter
-              v-show="props.isOpenFilter === col.field"
+              v-if="props.isOpenFilter === col.field"
               :column="col"
               :type="col.type"
               :columnFilterLang="props.columnFilterLang"
@@ -133,7 +129,7 @@
 </template>
 <script setup lang="ts">
 import { watch, ref } from 'vue'
-import columnFilter from './column-filter.vue'
+import columnFilter from './ColumnFilter.vue'
 import iconCheck from '../../assets/icons/icon-check.vue'
 import iconDash from '../../assets/icons/icon-dash.vue'
 import iconFilter from '../../assets/icons/icon-filter.vue'
