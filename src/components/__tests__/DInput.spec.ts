@@ -99,6 +99,6 @@ describe('DTextInput.vue', () => {
 
     await closeButton.trigger('click')
     const inputElement = wrapper.find('input').element as HTMLInputElement
-    expect(inputElement.value).toBe('test')
+    expect(inputElement.value).toBe('')
   })
 })

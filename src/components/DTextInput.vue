@@ -23,6 +23,7 @@
       <div
         v-if="clearable"
         class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
+        @click="inputValue = ''"
       >
         <slot name="clear-icon">
           <svg
