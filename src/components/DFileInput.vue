@@ -17,7 +17,7 @@
         @focus="$emit('focus')"
         @blur="$emit('blur')"
         @keyup.enter="$emit('enter')"
-        @input="$emit('update:modelValue', inputValue)"
+        @change="handleFileChange"
       />
       <!-- <input
         :id="id"
@@ -61,7 +61,7 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  modelValue: String,
+  modelValue: Object,
   label: String,
   id: String,
   type: {
@@ -77,11 +77,9 @@ const props = defineProps({
   required: Boolean,
   clearable: Boolean
 })
-const emit = defineEmits(['focus', 'blur', 'change', 'enter', 'update:modelValue'])
+const emit = defineEmits(['focus', 'blur', 'enter', 'update:modelValue'])
 
-const inputValue = ref(props.modelValue)
-
-watch(inputValue, (newValue: any) => {
-  emit('change', newValue)
-})
+const handleFileChange = (event: any) => {
+  emit('update:modelValue', event.target.files[0])
+}
 </script>
