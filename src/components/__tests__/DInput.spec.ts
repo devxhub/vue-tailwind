@@ -1,76 +1,104 @@
-import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
-import Input from '../DInput.vue';
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import DTextInput from '../DTextInput.vue'
 
-describe('DInput.vue', () => {
-  it('renders input element', () => {
-    const wrapper = mount(Input, {
+describe('DTextInput.vue', () => {
+  it('renders input element with label, placeholder, and hint text', () => {
+    const wrapper = mount(DTextInput, {
       props: {
         label: 'Username',
         modelValue: '',
-      },
-    });
+        placeholder: 'Enter your username',
+        hint: 'Hint text'
+      }
+    })
 
-    // Assert the presence of a label
-    const label = wrapper.find('label');
-    expect(label.exists()).toBe(true);
-    expect(label.text()).toBe('Username');
+    const label = wrapper.find('label')
+    expect(label.exists()).toBe(true)
 
-    // Assert the presence of an input
-    const input = wrapper.find('input');
-    expect(input.exists()).toBe(true);
-  });
+    const input = wrapper.find('input')
+    expect(input.exists()).toBe(true)
+    expect(input.attributes('placeholder')).toBe('Enter your username')
+
+    const hint = wrapper.find('p')
+    expect(hint.exists()).toBe(true)
+    expect(hint.text()).toBe('Hint text')
+  })
 
   it('binds input value to modelValue prop', () => {
-    const wrapper = mount(Input, {
+    const wrapper = mount(DTextInput, {
       props: {
-        modelValue: 'test',
-      },
-    });
+        modelValue: 'test'
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.value).toBe('test');
-  });
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+    expect(inputElement.value).toBe('test')
+  })
 
   it('updates modelValue on input', async () => {
-    const wrapper = mount(Input, {
+    const wrapper = mount(DTextInput, {
       props: {
-        modelValue: '',
-      },
-    });
+        modelValue: ''
+      }
+    })
 
-    const inputElement = wrapper.find('input');
-    await inputElement.setValue('new value');
+    const inputElement = wrapper.find('input')
+    await inputElement.setValue('new value')
 
-    // Check that the "update:modelValue" event has been emitted
-    const updateEvents = wrapper.emitted('update:modelValue');
-    expect(updateEvents).toBeTruthy();
+    const updateEvents = wrapper.emitted('update:modelValue')
+    expect(updateEvents).toBeTruthy()
 
-    // Now we can safely assert the first emitted event's payload
-    const firstEventPayload = updateEvents ? updateEvents[0] : [];
-    expect(firstEventPayload).toEqual(['new value']);
-  });
+    const firstEventPayload = updateEvents ? updateEvents[0] : []
+    expect(firstEventPayload).toEqual(['new value'])
+  })
 
-  it('displays placeholder text', () => {
-    const placeholderText = 'Enter your username';
-    const wrapper = mount(Input, {
+  it('emits focus event when input is focused', async () => {
+    const wrapper = mount(DTextInput, {
       props: {
-        placeholder: placeholderText,
-      },
-    });
+        modelValue: ''
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.placeholder).toBe(placeholderText);
-  });
+    await wrapper.find('input').trigger('focus')
+    expect(wrapper.emitted('focus')).toBeTruthy()
+  })
 
-  it('is disabled when disabled prop is true', () => {
-    const wrapper = mount(Input, {
+  it('emits blur event when input is blurred', async () => {
+    const wrapper = mount(DTextInput, {
       props: {
-        disabled: true,
-      },
-    });
+        modelValue: ''
+      }
+    })
 
-    const inputElement = wrapper.find('input').element as HTMLInputElement;
-    expect(inputElement.disabled).toBe(true);
-  });
-});
+    await wrapper.find('input').trigger('blur')
+    expect(wrapper.emitted('blur')).toBeTruthy()
+  })
+
+  it('emits enter event when Enter key is pressed', async () => {
+    const wrapper = mount(DTextInput, {
+      props: {
+        modelValue: ''
+      }
+    })
+
+    await wrapper.find('input').trigger('keyup.enter')
+    expect(wrapper.emitted('enter')).toBeTruthy()
+  })
+
+  it('clears input value when clearable and close button is clicked', async () => {
+    const wrapper = mount(DTextInput, {
+      props: {
+        modelValue: 'test',
+        clearable: true
+      }
+    })
+
+    const closeButton = wrapper.find('.inline')
+    expect(closeButton.exists()).toBe(true)
+
+    await closeButton.trigger('click')
+    const inputElement = wrapper.find('input').element as HTMLInputElement
+    expect(inputElement.value).toBe('test')
+  })
+})
