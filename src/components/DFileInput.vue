@@ -4,7 +4,7 @@
     <div class="relative">
       <input
         :id="id"
-        ref="fileInput"
+        :key="fileInputKey"
         type="file"
         :accept="accept"
         :placeholder="placeholder"
@@ -13,31 +13,16 @@
         :readonly="readonly"
         :required="required"
         :clearable="clearable"
+        :multiple="multiple"
         class="w-full border px-2 py-1 rounded"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
-        @keyup.enter="$emit('enter')"
         @change="handleFileChange"
       />
-      <!-- <input
-        :id="id"
-        ref="fileInput"
-        v-model="inputValue"
-        :placeholder="placeholder"
-        :hint="hint"
-        :disabled="disabled"
-        :readonly="readonly"
-        :required="required"
-        :clearable="clearable"
-        class="w-full border px-2 py-1 rounded"
-        @focus="$emit('focus')"
-        @blur="$emit('blur')"
-        @keyup.enter="$emit('enter')"
-        @input="$emit('update:modelValue', inputValue)"
-      /> -->
       <div
         v-if="clearable"
         class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
+        @click.stop.prevent="clearFile"
       >
         <slot name="clear-icon">
           <svg
@@ -58,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
-  modelValue: Object,
+  modelValue: [Object, String],
   label: String,
   id: String,
   type: {
@@ -75,11 +60,23 @@ const props = defineProps({
   readonly: Boolean,
   autofocus: Boolean,
   required: Boolean,
-  clearable: Boolean
+  clearable: Boolean,
+  multiple: Boolean
 })
 const emit = defineEmits(['focus', 'blur', 'enter', 'update:modelValue'])
 
+const fileInputKey = ref(0)
+
 const handleFileChange = (event: any) => {
-  emit('update:modelValue', event.target.files[0])
+  if (props.multiple) {
+    emit('update:modelValue', event.target.files)
+  } else {
+    emit('update:modelValue', event.target.files[0])
+  }
+}
+
+const clearFile = () => {
+  fileInputKey.value += 1
+  emit('update:modelValue', '')
 }
 </script>
