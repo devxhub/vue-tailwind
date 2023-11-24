@@ -102,3 +102,4 @@ describe('DTextarea', () => {
     expect(textareaElement.value).toBe('')
   })
 })
+
