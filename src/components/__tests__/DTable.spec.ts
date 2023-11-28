@@ -216,7 +216,6 @@ describe('DTable.vue', () => {
     const propsData = {
       loading: false,
       isServerMode: false,
-      skin: 'bh-table-striped bh-table-hover',
       totalRows: 100,
       rows: [
         { id: 1, name: 'John Doe', age: 25 }
