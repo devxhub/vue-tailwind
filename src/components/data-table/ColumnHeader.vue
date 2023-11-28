@@ -114,7 +114,7 @@
               type="button"
               @click.stop="emit('toggleFilterMenu', col)"
             >
-              <icon-filter class="bh-w-4" />
+              <icon-filter class="w-4 ml-2" />
             </button>
 
             <column-filter
@@ -133,10 +133,10 @@
 </template>
 <script setup lang="ts">
 import { watch, ref, defineAsyncComponent } from 'vue'
-const columnFilter = defineAsyncComponent(() => import('./ColumnFilter.vue'))
-const iconCheck = defineAsyncComponent(() => import('../../assets/icons/icon-check.vue'))
-const iconDash = defineAsyncComponent(() => import('../../assets/icons/icon-dash.vue'))
-const iconFilter = defineAsyncComponent(() => import('../../assets/icons/icon-filter.vue'))
+const ColumnFilter = defineAsyncComponent(() => import('./ColumnFilter.vue'))
+const IconCheck = defineAsyncComponent(() => import('../../assets/icons/IconCheck.vue'))
+const IconDash = defineAsyncComponent(() => import('../../assets/icons/IconDash.vue'))
+const IconFilter = defineAsyncComponent(() => import('../../assets/icons/IconFilter.vue'))
 
 const selectedAll: any = ref(null)
 

@@ -1,7 +1,7 @@
 <template>
   <div class="py-5" :class="{ 'pointer-events-none': currentLoader }">
     <div class="flex items-center flex-wrap flex-col sm:flex-row gap-4">
-      <div class="flex items-center">
+      <div class="flex items-center bh-pagination-info">
         <span class="mr-2">
           {{
             stringFormat(props.paginationInfo, filterRowCount ? offset : 0, limit, filterRowCount)
@@ -28,16 +28,7 @@
         >
           <span v-if="props.firstArrow" v-html="props.firstArrow"> </span>
           <slot v-else name="first-arrow">
-            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16">
-              <g fill="currentColor" fill-rule="evenodd">
-                <path
-                  d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-                />
-                <path
-                  d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-                />
-              </g>
-            </svg>
+            <FirstArrow />
           </slot>
         </button>
         <button
@@ -47,13 +38,7 @@
           @click="previousPage"
         >
           <span v-if="props.previousArrow" v-html="props.previousArrow"> </span>
-          <svg v-else aria-hidden="true" width="14" height="14" viewBox="0 0 16 16">
-            <path
-              fill="currentColor"
-              fill-rule="evenodd"
-              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-            />
-          </svg>
+          <PrevArrow  />
         </button>
 
         <template v-if="props.showNumbers">
@@ -79,13 +64,7 @@
           @click="nextPage"
         >
           <span v-if="props.nextArrow" v-html="props.nextArrow"> </span>
-          <svg v-else aria-hidden="true" width="14" height="14" viewBox="0 0 16 16">
-            <path
-              fill="currentColor"
-              fill-rule="evenodd"
-              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8L4.646 2.354a.5.5 0 0 1 0-.708z"
-            />
-          </svg>
+          <LastArrow v-else />
         </button>
 
         <button
@@ -96,16 +75,7 @@
           @click="(currentPage = maxPage), emit('changePage', currentPage)"
         >
           <span v-if="props.lastArrow" v-html="props.lastArrow"> </span>
-          <svg v-else aria-hidden="true" width="14" height="14" viewBox="0 0 16 16">
-            <g fill="currentColor" fill-rule="evenodd">
-              <path
-                d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8L3.646 2.354a.5.5 0 0 1 0-.708z"
-              />
-              <path
-                d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8L7.646 2.354a.5.5 0 0 1 0-.708z"
-              />
-            </g>
-          </svg>
+          <NextArrow v-else />
         </button>
       </div>
     </div>
@@ -113,7 +83,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, defineAsyncComponent } from 'vue'
+const FirstArrow = defineAsyncComponent(() => import('@/assets/icons/FirstArrow.vue'))
+const PrevArrow = defineAsyncComponent(() => import('@/assets/icons/PrevArrow.vue'))
+const LastArrow = defineAsyncComponent(() => import('@/assets/icons/LastArrow.vue'))
+const NextArrow = defineAsyncComponent(() => import('@/assets/icons/NextArrow.vue'))
 
 const props = withDefaults(
   defineProps<{

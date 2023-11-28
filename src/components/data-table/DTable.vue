@@ -139,9 +139,9 @@
 <script setup lang="ts">
 import { computed, onMounted, type Ref, ref, useSlots, watch, defineAsyncComponent } from 'vue'
 const FooterPagination = defineAsyncComponent(() => import('./FooterPagination.vue'))
-const columnHeader = defineAsyncComponent(() => import('./ColumnHeader.vue'))
-const iconCheck = defineAsyncComponent(() => import('../../assets/icons/icon-check.vue'))
-const iconLoader = defineAsyncComponent(() => import('../../assets/icons/icon-loader.vue'))
+const ColumnHeader = defineAsyncComponent(() => import('./ColumnHeader.vue'))
+const IconCheck = defineAsyncComponent(() => import('@/assets/icons/IconCheck.vue'))
+const IconLoader = defineAsyncComponent(() => import('@/assets/icons/IconLoader.vue'))
 
 const slots = useSlots()
 const props = withDefaults(
@@ -221,6 +221,7 @@ const props = withDefaults(
     height: '500px',
     stickyFirstColumn: false,
     cloneHeaderInFooter: false,
+    header: true,
     selectRowOnClick: false
   }
 )
