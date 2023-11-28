@@ -88,20 +88,20 @@
               v-if="col.type === 'number'"
               v-model.number.trim="col.value"
               type="number"
-              class="bh-form-control"
+              class="border border-gray-300"
               @keyup="emit('filterChange')"
             />
             <input
               v-else-if="col.type === 'date'"
               v-model="col.value"
               type="date"
-              class="bh-form-control"
+              class="border border-gray-300"
               @change="emit('filterChange')"
             />
             <select
               v-else-if="col.type === 'bool'"
               v-model="col.value"
-              class="bh-form-control"
+              class="border border-gray-300"
               @change="emit('filterChange')"
             >
               <option :value="undefined">All</option>
