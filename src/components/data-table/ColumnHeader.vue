@@ -1,0 +1,161 @@
+<template>
+  <tr key="hdrrow">
+    <th
+      v-if="props.all.hasCheckbox"
+      :key="'chkall'"
+      :class="{
+        'ticky bg-blue-100 z-1':
+          props.all.stickyHeader || props.all.stickyFirstColumn,
+        'top-0': props.all.stickyHeader,
+        'left-0': props.all.stickyFirstColumn
+      }"
+    >
+      <div>
+        <input
+          ref="selectedAll"
+          id="select"
+          type="checkbox"
+          @click.stop="emit('selectAll', $event?.target)"
+        />
+        <div>
+          <icon-check class="check" />
+          <icon-dash class="intermediate" />
+        </div>
+      </div>
+    </th>
+    <template v-for="(col, j) in props.all.columns">
+      <th
+        v-if="!col.hide"
+        :key="col.field"
+        class="select-none z-1"
+        :class="[
+          props.all.sortable && col.sort ? 'cursor-pointer' : '',
+          j === 0 && props.all.stickyFirstColumn ? 'sticky left-0 bg-blue-100' : '',
+          props.all.hasCheckbox && j === 0 && props.all.stickyFirstColumn ? 'left-[52px]' : ''
+        ]"
+        :style="{
+          width: col.width,
+          'min-width': col.minWidth,
+          'max-width': col.maxWidth
+        }"
+      >
+        <div
+          class="flex items-center"
+          :class="[col.headerClass ? col.headerClass : '']"
+          @click="props.all.sortable && col.sort && emit('sortChange', col.field)"
+        >
+          {{ col.title }}
+          <span
+            v-if="props.all.sortable && col.sort"
+            class="ml-3 flex items-center"
+            :class="[props.currentSortColumn, props.currentSortDirection]"
+          >
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+              <polygon
+                points="3.11,6.25 10.89,6.25 7,1.75 "
+                fill="currentColor"
+                class="bh-text-black/20"
+                :class="[
+                  currentSortColumn === col.field && currentSortDirection === 'asc'
+                    ? '!bh-text-primary'
+                    : ''
+                ]"
+              ></polygon>
+              <polygon
+                points="7,12.25 10.89,7.75 3.11,7.75 "
+                fill="currentColor"
+                class="bh-text-black/20"
+                :class="[
+                  currentSortColumn === col.field && currentSortDirection === 'desc'
+                    ? '!bh-text-primary'
+                    : ''
+                ]"
+              ></polygon>
+            </svg>
+          </span>
+        </div>
+
+        <template v-if="props.all.columnFilter && !props.isFooter">
+          <div v-if="col.filter" class="flex relative">
+            <input
+              v-if="col.type === 'string'"
+              v-model.trim="col.value"
+              type="text"
+              class="border border-gray-300"
+              @keyup="emit('filterChange')"
+            />
+            <input
+              v-if="col.type === 'number'"
+              v-model.number.trim="col.value"
+              type="number"
+              class="bh-form-control"
+              @keyup="emit('filterChange')"
+            />
+            <input
+              v-else-if="col.type === 'date'"
+              v-model="col.value"
+              type="date"
+              class="bh-form-control"
+              @change="emit('filterChange')"
+            />
+            <select
+              v-else-if="col.type === 'bool'"
+              v-model="col.value"
+              class="bh-form-control"
+              @change="emit('filterChange')"
+            >
+              <option :value="undefined">All</option>
+              <option :value="true">True</option>
+              <option :value="false">False</option>
+            </select>
+
+            <button
+              v-if="col.type !== 'bool'"
+              type="button"
+              @click.stop="emit('toggleFilterMenu', col)"
+            >
+              <icon-filter class="bh-w-4" />
+            </button>
+
+            <column-filter
+              v-if="props.isOpenFilter === col.field"
+              :column="col"
+              :type="col.type"
+              :columnFilterLang="props.columnFilterLang"
+              @close="emit('toggleFilterMenu', null)"
+              @filterChange="emit('filterChange')"
+            />
+          </div>
+        </template>
+      </th>
+    </template>
+  </tr>
+</template>
+<script setup lang="ts">
+import { watch, ref, defineAsyncComponent } from 'vue'
+const columnFilter = defineAsyncComponent(() => import('./ColumnFilter.vue'))
+const iconCheck = defineAsyncComponent(() => import('../../assets/icons/icon-check.vue'))
+const iconDash = defineAsyncComponent(() => import('../../assets/icons/icon-dash.vue'))
+const iconFilter = defineAsyncComponent(() => import('../../assets/icons/icon-filter.vue'))
+
+const selectedAll: any = ref(null)
+
+const props = defineProps([
+  'all',
+  'currentSortColumn',
+  'currentSortDirection',
+  'isOpenFilter',
+  'isFooter',
+  'checkAll',
+  'columnFilterLang'
+])
+
+const emit: any = defineEmits(['selectAll', 'sortChange', 'filterChange', 'toggleFilterMenu'])
+const checkboxChange = () => {
+  if (selectedAll.value) {
+    selectedAll.value.indeterminate = props.checkAll !== 0 ? !props.checkAll : false
+    selectedAll.value.checked = props.checkAll
+  }
+}
+watch(() => props.checkAll, checkboxChange)
+</script>
