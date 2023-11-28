@@ -27,6 +27,7 @@
     :columnFilter="true"
     @change="changeServer"
   >
+    <!-- <template #filter-icon> ioi </template> -->
   </Dtable>
 </template>
 

@@ -38,7 +38,9 @@
           @click="previousPage"
         >
           <span v-if="props.previousArrow" v-html="props.previousArrow"> </span>
-          <PrevArrow  />
+          <slot v-else name="prev-arrow">
+            <PrevArrow />
+          </slot>
         </button>
 
         <template v-if="props.showNumbers">
@@ -64,7 +66,9 @@
           @click="nextPage"
         >
           <span v-if="props.nextArrow" v-html="props.nextArrow"> </span>
-          <LastArrow v-else />
+          <slot v-else name="last-arrow">
+            <LastArrow />
+          </slot>
         </button>
 
         <button
@@ -75,7 +79,9 @@
           @click="(currentPage = maxPage), emit('changePage', currentPage)"
         >
           <span v-if="props.lastArrow" v-html="props.lastArrow"> </span>
-          <NextArrow v-else />
+          <slot v-else name="next-arrow">
+            <NextArrow />
+          </slot>
         </button>
       </div>
     </div>
@@ -83,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, defineAsyncComponent } from 'vue'
+import { computed, ref, defineAsyncComponent } from 'vue'
 const FirstArrow = defineAsyncComponent(() => import('@/assets/icons/FirstArrow.vue'))
 const PrevArrow = defineAsyncComponent(() => import('@/assets/icons/PrevArrow.vue'))
 const LastArrow = defineAsyncComponent(() => import('@/assets/icons/LastArrow.vue'))

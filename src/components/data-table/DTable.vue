@@ -4,7 +4,7 @@
       :class="{ 'min-h-[300px]': currentLoader }"
       :style="{ height: props.stickyHeader && props.height }"
     >
-      <table :class="[props.skin]">
+      <table>
         <thead v-if="header" :class="{ 'sticky top-0 z-10': props.stickyHeader }">
           <column-header
             :all="props"
@@ -17,7 +17,14 @@
             @sortChange="sortChange"
             @filterChange="filterChange"
             @toggleFilterMenu="toggleFilterMenu"
-          />
+          >
+            <template #sort-icon>
+              <slot name="sort-icon"></slot>
+            </template>
+            <template #filter-icon>
+              <slot name="filter-icon"></slot>
+            </template>
+          </column-header>
         </thead>
         <tbody>
           <template v-if="filterRowCount">
@@ -77,9 +84,13 @@
           </tr>
 
           <template v-if="!filterRowCount && currentLoader">
-            <tr v-for="i in props.pageSize" :key="i">
-              <td :colspan="props.columns.length + 1">
-                <div class="bh-skeleton-box bh-h-8"></div>
+            <tr
+              v-for="i in props.pageSize"
+              :key="i"
+              class="bg-white h-11 border-transparent"
+            >
+              <td :colspan="props.columns.length + 1" class="p-0 border-transparent">
+                <div class="h-8"></div>
               </td>
             </tr>
           </template>
@@ -132,6 +143,18 @@
       @changePageSize="changePageSize"
       @changePage="changePage"
     >
+      <template #first-arrow>
+        <slot name="first-arrow"></slot>
+      </template>
+      <template #prev-arrow>
+        <slot name="prev-arrow"></slot>
+      </template>
+      <template #last-arrow>
+        <slot name="last-arrow"></slot>
+      </template>
+      <template #next-arrow>
+        <slot name="next-arrow"></slot>
+      </template>
     </FooterPagination>
   </div>
 </template>
@@ -148,7 +171,6 @@ const props = withDefaults(
   defineProps<{
     loading?: boolean
     isServerMode?: boolean
-    skin?: string
     totalRows?: number
     rows?: Array<any>
     columns?: Array<any>
@@ -187,7 +209,6 @@ const props = withDefaults(
   {
     loading: false,
     isServerMode: false,
-    skin: 'bh-table-striped',
     totalRows: 0,
     rows: () => [],
     columns: () => [],
@@ -838,64 +859,6 @@ const isRowSelected = (index: number) => {
 </script>
 
 <style>
-*,
-::backdrop,
-:after,
-:before {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x: ;
-  --tw-pan-y: ;
-  --tw-pinch-zoom: ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position: ;
-  --tw-gradient-via-position: ;
-  --tw-gradient-to-position: ;
-  --tw-ordinal: ;
-  --tw-slashed-zero: ;
-  --tw-numeric-figure: ;
-  --tw-numeric-spacing: ;
-  --tw-numeric-fraction: ;
-  --tw-ring-inset: ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: #3b82f680;
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur: ;
-  --tw-brightness: ;
-  --tw-contrast: ;
-  --tw-grayscale: ;
-  --tw-hue-rotate: ;
-  --tw-invert: ;
-  --tw-saturate: ;
-  --tw-sepia: ;
-  --tw-drop-shadow: ;
-  --tw-backdrop-blur: ;
-  --tw-backdrop-brightness: ;
-  --tw-backdrop-contrast: ;
-  --tw-backdrop-grayscale: ;
-  --tw-backdrop-hue-rotate: ;
-  --tw-backdrop-invert: ;
-  --tw-backdrop-opacity: ;
-  --tw-backdrop-saturate: ;
-  --tw-backdrop-sepia: ;
-}
-*,
-:after,
-:before {
-  border: 0 solid #0000;
-  box-sizing: border-box;
-}
 table {
   width: 100%;
   max-width: 100%;
@@ -909,9 +872,6 @@ table thead tr th {
 table tbody tr {
   border-bottom-width: 1px;
   border-style: solid;
-}
-table.bh-table-striped tbody tr:nth-child(odd) {
-  background-color: #e0e6ed26;
 }
 table tbody tr td,
 table thead tr th {
@@ -976,24 +936,5 @@ input[type='checkbox']:indeterminate + div svg.intermediate {
   display: flex;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-.bh-skeleton-box {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-.bh-skeleton-box:after {
-  position: absolute;
-  inset: 0;
-  --tw-translate-x: -100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
-    skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
-    scaleY(var(--tw-scale-y));
-  animation: bhshimmer 2s infinite;
-  background-image: linear-gradient(90deg, #0000, rgba(0, 0, 0, 0.025) 20%, #0000000d 50%, #0000);
-  --tw-content: '';
-  content: var(--tw-content);
 }
 </style>
