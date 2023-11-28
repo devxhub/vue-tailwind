@@ -141,7 +141,7 @@ import { computed, onMounted, type Ref, ref, useSlots, watch, defineAsyncCompone
 const FooterPagination = defineAsyncComponent(() => import('./FooterPagination.vue'))
 const ColumnHeader = defineAsyncComponent(() => import('./ColumnHeader.vue'))
 const IconCheck = defineAsyncComponent(() => import('@/assets/icons/IconCheck.vue'))
-const IconLoader = defineAsyncComponent(() => import('@/assets/icons/IconLoader.vue'))
+const IconLoader = defineAsyncComponent(() => import('@/assets/icons/IonLoader.vue'))
 
 const slots = useSlots()
 const props = withDefaults(
