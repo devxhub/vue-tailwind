@@ -25,7 +25,7 @@
         @input="$emit('update:modelValue', inputValue)"
       />
       <div
-        v-if="clearable"
+        v-if="clearable && inputValue !== ''"
         class="absolute right-1.5 top-0 cursor-pointer"
         @click="inputValue = ''"
       >
