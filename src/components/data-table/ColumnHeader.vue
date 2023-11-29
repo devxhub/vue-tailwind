@@ -17,8 +17,12 @@
           @click.stop="emit('selectAll', $event?.target)"
         />
         <div>
-          <icon-check class="check" />
-          <icon-dash class="intermediate" />
+          <slot name="check-icon">
+            <icon-check class="check" />
+          </slot>
+          <slot name="dash-icon">
+            <icon-dash class="intermediate" />
+          </slot>
         </div>
       </div>
     </th>

@@ -18,6 +18,12 @@
             @filterChange="filterChange"
             @toggleFilterMenu="toggleFilterMenu"
           >
+            <template #check-icon>
+              <slot name="check-icon"></slot>
+            </template>
+            <template #dash-icon>
+              <slot name="dash-icon"></slot>
+            </template>
             <template #sort-icon>
               <slot name="sort-icon"></slot>
             </template>
