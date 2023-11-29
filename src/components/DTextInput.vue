@@ -21,7 +21,7 @@
         @input="$emit('update:modelValue', inputValue)"
       />
       <div
-        v-if="clearable"
+        v-if="clearable && inputValue !== ''"
         class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
         @click="inputValue = ''"
       >
@@ -47,7 +47,10 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  modelValue: String,
+  modelValue: {
+    type: String,
+    default: ''
+  },
   label: String,
   id: String,
   type: {
