@@ -47,10 +47,7 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  modelValue: {
-    type: String,
-    default: ''
-  },
+  modelValue: String,
   label: String,
   id: String,
   type: {
