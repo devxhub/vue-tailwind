@@ -20,7 +20,7 @@
         @change="handleFileChange"
       />
       <div
-        v-if="clearable"
+        v-if="clearable && isClear"
         class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
         @click.stop.prevent="clearFile"
       >
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const isClear = ref(false)
 const props = defineProps({
   modelValue: [Object, String],
   label: String,
@@ -70,13 +71,16 @@ const fileInputKey = ref(0)
 const handleFileChange = (event: any) => {
   if (props.multiple) {
     emit('update:modelValue', event.target.files)
+    isClear.value = true
   } else {
     emit('update:modelValue', event.target.files[0])
+    isClear.value = true
   }
 }
 
 const clearFile = () => {
   fileInputKey.value += 1
   emit('update:modelValue', '')
+  isClear.value = false
 }
 </script>
