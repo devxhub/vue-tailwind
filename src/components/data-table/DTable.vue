@@ -90,11 +90,7 @@
           </tr>
 
           <template v-if="!filterRowCount && currentLoader">
-            <tr
-              v-for="i in props.pageSize"
-              :key="i"
-              class="bg-white h-11 border-transparent"
-            >
+            <tr v-for="i in props.pageSize" :key="i" class="bg-white h-11 border-transparent">
               <td :colspan="props.columns.length + 1" class="p-0 border-transparent">
                 <div class="h-8"></div>
               </td>
@@ -114,7 +110,18 @@
             @sortChange="sortChange"
             @filterChange="filterChange"
             @toggleFilterMenu="toggleFilterMenu"
-          />
+          >
+            <template #check-icon>
+              <slot name="check-icon"></slot>
+            </template>
+            <template #dash-icon>
+              <slot name="dash-icon"></slot>
+            </template>
+            <template #sort-icon>
+              <slot name="sort-icon"></slot>
+            </template>
+            <template #filter-icon> <slot name="filter-icon"></slot> </template
+          ></column-header>
         </tfoot>
       </table>
 
