@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5" :class="{ 'pointer-events-none': currentLoader }">
+  <div :class="{ 'pointer-events-none': loading }">
     <div class="flex items-center flex-wrap flex-col sm:flex-row gap-4">
       <div class="flex items-center bh-pagination-info">
         <span class="mr-2">
@@ -10,7 +10,7 @@
         <select
           v-if="props.showPageSize"
           v-model="currentPageSize"
-          @change="emit('changePageSize', currentPageSize)"
+          @change="changePageSize(currentPageSize)"
         >
           <option v-for="option in props.pageSizeOptions" :value="option" :key="option">
             {{ option }}
@@ -24,7 +24,7 @@
           type="button"
           class="bh-page-item first-page"
           :class="{ disabled: currentPage <= 1 }"
-          @click="(currentPage = 1), emit('changePage', currentPage)"
+          @click="(currentPage = 1), changePage(currentPage)"
         >
           <span v-if="props.firstArrow" v-html="props.firstArrow"> </span>
           <slot v-else name="first-arrow">
@@ -76,7 +76,7 @@
           type="button"
           class="bh-page-item last-page"
           :class="{ disabled: currentPage >= maxPage }"
-          @click="(currentPage = maxPage), emit('changePage', currentPage)"
+          @click="(currentPage = maxPage), changePage(currentPage)"
         >
           <span v-if="props.lastArrow" v-html="props.lastArrow"> </span>
           <slot v-else name="next-arrow">
@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, defineAsyncComponent } from 'vue'
+import { computed, ref, defineAsyncComponent, watch, onMounted } from 'vue'
 const FirstArrow = defineAsyncComponent(() => import('@/assets/icons/FirstArrow.vue'))
 const PrevArrow = defineAsyncComponent(() => import('@/assets/icons/PrevArrow.vue'))
 const LastArrow = defineAsyncComponent(() => import('@/assets/icons/LastArrow.vue'))
@@ -97,11 +97,9 @@ const NextArrow = defineAsyncComponent(() => import('@/assets/icons/NextArrow.vu
 
 const props = withDefaults(
   defineProps<{
-    currentLoader?: boolean
+    loading?: boolean
     totalRows?: number
     rows?: Array<any>
-    offset?: number
-    limit?: number
     page?: number
     paginationInfo?: string // default: "Showing {0} to {1} of {2} entries"
     showPageSize: boolean
@@ -115,19 +113,15 @@ const props = withDefaults(
     showNumbers?: boolean
     showNumbersCount?: number
     pageSize?: number // default: 10
-    pagination?: boolean
-    isServerMode?: boolean
   }>(),
   {
-    currentLoader: false,
+    loading: false,
     totalRows: 0,
     rows: () => [],
-    offset: 0,
-    limit: 0,
-    page: 1,
+    page: 10,
     paginationInfo: 'Showing {0} to {1} of {2} entries',
     showPageSize: true,
-    pageSizeOptions: () => [10, 20, 30, 50, 100],
+    pageSizeOptions: () => [10, 20, 30, 50],
     showFirstPage: true,
     showLastPage: true,
     firstArrow: '',
@@ -136,16 +130,12 @@ const props = withDefaults(
     previousArrow: '',
     showNumbers: true,
     showNumbersCount: 5,
-    pageSize: 10,
-    pagination: true,
-    isServerMode: false
+    pageSize: 10
   }
 )
 
-const emit: any = defineEmits(['changePageSize', 'changePage'])
-
 const currentPage = ref(props?.page)
-const currentPageSize = ref(props.pagination ? props?.pageSize : props?.rows?.length)
+const currentPageSize = ref(props?.pageSize ? props?.pageSize : props?.rows?.length)
 const filterRowCount = ref(props?.totalRows)
 
 const stringFormat = (template: string, ...args: any[]) => {
@@ -153,6 +143,17 @@ const stringFormat = (template: string, ...args: any[]) => {
     return typeof args[number] != 'undefined' ? args[number] : match
   })
 }
+
+// The starting value of the page number
+const offset = computed(() => {
+  return (currentPage.value - 1) * <number>currentPageSize.value + 1
+})
+
+// Maximum number of pages
+const limit = computed(() => {
+  const limit = currentPage.value * <number>currentPageSize.value
+  return <number>filterRowCount.value >= limit ? limit : filterRowCount.value
+})
 
 // Maximum number of pages
 const maxPage = computed(() => {
@@ -189,10 +190,23 @@ const paging = computed(() => {
   return pages
 })
 
+// pagesize changed
+const changePageSize = (currentSize: any) => {
+  currentPage.value = 1
+  currentPageSize.value = currentSize
+}
+watch(() => currentPageSize.value, changePageSize)
+
 // page change
+const changePage = (page: any) => {
+  currentPage.value = page
+}
+
+watch(() => currentPage.value, changePage)
+
 const movePage = (page: number) => {
   currentPage.value = page
-  emit('changePage', page)
+  changePage(page)
 }
 
 // next page
@@ -201,7 +215,7 @@ const nextPage = () => {
     return false
   }
   currentPage.value++
-  emit('changePage', currentPage.value)
+  changePage(currentPage.value)
 }
 
 // previous page
@@ -210,6 +224,25 @@ const previousPage = () => {
     return false
   }
   currentPage.value--
-  emit('changePage', currentPage.value)
+  changePage(currentPage.value)
 }
 </script>
+
+<style scoped>
+.bh-page-item {
+  display: grid;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.bh-page-item.disabled:not(.bh-active) {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.bh-page-item.bh-active {
+  padding: 0px 5px;
+  border-radius: 3px;
+  background-color: #00050b30;
+}
+</style>
