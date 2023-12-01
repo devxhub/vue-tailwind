@@ -13,7 +13,7 @@
         <Spinner />
       </slot>
       <slot v-else>
-        <span>{{ name }}</span>
+        <span>Click me</span>
       </slot>
     </div>
   </button>
@@ -22,16 +22,20 @@
     v-else
     :href="href"
     :target="target"
-    class="border px-1 pb-0.5"
+    class="border px-1 pb-0.5 inline-block"
     :class="{ 'w-full': block, 'cursor-not-allowed opacity-70': loading }"
     :disabled="disabled || loading"
     :autofocus="autofocus"
     @click="handleClick"
   >
-    <slot>
-      <span v-if="loading">Loading...</span>
-      <span v-else>{{ name }}</span>
-    </slot>
+    <div class="flex items-center justify-center">
+      <slot v-if="loading" name="loading">
+        <Spinner />
+      </slot>
+      <slot v-else>
+        <span>Click me</span>
+      </slot>
+    </div>
   </a>
 </template>
 
@@ -59,5 +63,3 @@ const handleClick = () => {
   }
 }
 </script>
-
-<style scoped></style>
