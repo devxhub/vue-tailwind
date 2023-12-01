@@ -3,7 +3,7 @@
     v-if="!href"
     :type="type"
     class="border px-1 pb-0.5"
-    :class="{ 'w-full': block, 'cursor-not-allowed opacity-70': loading }"
+    :class="{ 'w-full': block, 'opacity-70 cursor-not-allowed': disabled || loading }"
     :disabled="disabled || loading"
     :autofocus="autofocus"
     @click="handleClick"
@@ -20,10 +20,10 @@
 
   <a
     v-else
-    :href="href"
+    :href="!disabled || (!loading && href)"
     :target="target"
     class="border px-1 pb-0.5 inline-block"
-    :class="{ 'w-full': block, 'cursor-not-allowed opacity-70': loading }"
+    :class="{ 'w-full': block, 'opacity-70 pointer-events-none': disabled || loading }"
     :disabled="disabled || loading"
     :autofocus="autofocus"
     @click="handleClick"
