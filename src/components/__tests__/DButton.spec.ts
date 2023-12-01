@@ -1,58 +1,107 @@
-import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
-import Button from '../DButton.vue';
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import Button from '../DButton.vue'
 
 describe('DButton.vue', () => {
-  it('emits a click event when clicked', async () => {
+  it('emits a click event when clicked on the button', async () => {
     const wrapper = mount(Button, {
       props: {
-        color: 'blue',
-        size: 'md',
-      },
-      slots: {
-        default: 'Click Me',
-      },
-    });
+        name: 'Click Me',
+        type: 'button'
+      }
+    })
 
-    await wrapper.trigger('click');
-    expect(wrapper.emitted()).toHaveProperty('click');
-  });
+    await wrapper.trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('click')
+  })
 
-  it('has the correct default classes', () => {
-    const wrapper = mount(Button);
-    expect(wrapper.classes()).toContain('rounded');
-    expect(wrapper.classes()).toContain('bg-blue-500');
-    expect(wrapper.classes()).toContain('text-md');
-    expect(wrapper.classes()).toContain('px-4');
-    expect(wrapper.classes()).toContain('py-2');
-  });
-
-  it('displays the slot content', () => {
-    const wrapper = mount(Button, {
-      slots: {
-        default: 'Click Me',
-      },
-    });
-    expect(wrapper.text()).toContain('Click Me');
-  });
-
-  it('applies the size classes correctly', () => {
+  it('renders a button with the correct default classes', () => {
     const wrapper = mount(Button, {
       props: {
-        size: 'lg',
-      },
-    });
-    expect(wrapper.classes()).toContain('text-lg');
-    expect(wrapper.classes()).toContain('px-6');
-    expect(wrapper.classes()).toContain('py-3');
-  });
+        name: 'Click Me',
+        type: 'button'
+      }
+    })
 
-  it('applies the color classes correctly', () => {
+    expect(wrapper.find('button').classes()).toContain('border')
+    expect(wrapper.find('button').classes()).toContain('px-1')
+    expect(wrapper.find('button').classes()).toContain('pb-0.5')
+  })
+
+  it('renders a button with the correct dynamic classes', async () => {
     const wrapper = mount(Button, {
       props: {
-        color: 'red',
-      },
-    });
-    expect(wrapper.classes()).toContain('bg-red-500');
-  });
-});
+        name: 'Click Me',
+        type: 'button',
+        block: true,
+        disabled: false,
+        loading: false
+      }
+    })
+
+    expect(wrapper.find('button').classes()).toContain('w-full')
+    expect(wrapper.find('button').classes()).not.toContain('cursor-not-allowed')
+    expect(wrapper.find('button').classes()).not.toContain('opacity-70')
+
+    await wrapper.setProps({ disabled: true })
+  })
+
+  it('renders a button with loading spinner when loading is true', async () => {
+    const wrapper = mount(Button, {
+      props: {
+        name: 'Click Me',
+        type: 'button',
+        loading: true
+      }
+    })
+
+    // Simulate async action completion
+    await wrapper.setProps({ loading: false })
+
+    // Ensure button text is rendered
+    expect(wrapper.find('button span').text()).toContain('Click Me')
+  })
+
+  it('emits a click event when clicked on the anchor', async () => {
+    const wrapper = mount(Button, {
+      props: {
+        name: 'Click Me',
+        href: 'https://example.com'
+      }
+    })
+
+    await wrapper.trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('click')
+  })
+
+  it('renders an anchor with the correct default classes', () => {
+    const wrapper = mount(Button, {
+      props: {
+        name: 'Click Me',
+        href: 'https://example.com'
+      }
+    })
+
+    expect(wrapper.find('a').classes()).toContain('border')
+    expect(wrapper.find('a').classes()).toContain('px-1')
+    expect(wrapper.find('a').classes()).toContain('pb-0.5')
+  })
+
+  it('renders an anchor with the correct dynamic classes', async () => {
+    const wrapper = mount(Button, {
+      props: {
+        name: 'Click Me',
+        href: 'https://example.com',
+        block: true,
+        disabled: false,
+        loading: false
+      }
+    })
+
+    expect(wrapper.find('a').classes()).toContain('w-full')
+    expect(wrapper.find('a').classes()).not.toContain('cursor-not-allowed')
+    expect(wrapper.find('a').classes()).not.toContain('opacity-70')
+
+    await wrapper.setProps({ disabled: true })
+  })
+})

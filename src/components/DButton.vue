@@ -1,50 +1,63 @@
 <template>
-  <button :class="buttonClasses" @click="onClick">
-    <slot></slot>
+  <button
+    v-if="!href"
+    :type="type"
+    class="border px-1 pb-0.5"
+    :class="{ 'w-full': block, 'cursor-not-allowed opacity-70': loading }"
+    :disabled="disabled || loading"
+    :autofocus="autofocus"
+    @click="handleClick"
+  >
+    <div class="flex items-center justify-center">
+      <slot v-if="loading" name="loading">
+        <Spinner />
+      </slot>
+      <slot v-else>
+        <span>{{ name }}</span>
+      </slot>
+    </div>
   </button>
+
+  <a
+    v-else
+    :href="href"
+    :target="target"
+    class="border px-1 pb-0.5"
+    :class="{ 'w-full': block, 'cursor-not-allowed opacity-70': loading }"
+    :disabled="disabled || loading"
+    :autofocus="autofocus"
+    @click="handleClick"
+  >
+    <slot>
+      <span v-if="loading">Loading...</span>
+      <span v-else>{{ name }}</span>
+    </slot>
+  </a>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { defineProps, defineEmits } from 'vue'
+import Spinner from '../assets/icons/LoadingSpinner.vue'
 
-const emit = defineEmits(['click']);
+const props = defineProps([
+  'name',
+  'type',
+  'value',
+  'href',
+  'target',
+  'disabled',
+  'block',
+  'autofocus',
+  'loading'
+])
 
-const props = defineProps({
-  color: {
-    type: String as () => 'red' | 'green' | 'blue',
-    default: 'blue',
-  },
-  size: {
-    type: String as () => 'sm' | 'md' | 'lg',
-    default: 'md',
-  },
-});
+const emit = defineEmits(['click'])
 
-const colorClasses = computed(() => {
-  switch (props.color) {
-    case 'red':
-      return 'bg-red-500 text-white';
-    case 'green':
-      return 'bg-green-500 text-white';
-    case 'blue':
-    default:
-      return 'bg-blue-500 text-white';
+const handleClick = () => {
+  if (!props.loading && !props.disabled) {
+    emit('click')
   }
-});
-
-const sizeClasses = computed(() => {
-  switch (props.size) {
-    case 'sm':
-      return 'text-sm px-2 py-1';
-    case 'lg':
-      return 'text-lg px-6 py-3';
-    case 'md':
-    default:
-      return 'text-md px-4 py-2';
-  }
-});
-
-const buttonClasses = computed(() => `rounded ${colorClasses.value} ${sizeClasses.value} hover:opacity-75 transition-opacity`);
-
-const onClick = () => emit('click');
+}
 </script>
+
+<style scoped></style>
