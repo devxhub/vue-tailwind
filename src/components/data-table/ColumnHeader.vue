@@ -4,7 +4,7 @@
       v-if="props.all.hasCheckbox"
       :key="'chkall'"
       :class="{
-        'ticky bg-blue-100 z-1': props.all.stickyHeader || props.all.stickyFirstColumn,
+        'sticky z-1': props.all.stickyHeader || props.all.stickyFirstColumn,
         'top-0': props.all.stickyHeader,
         'left-0': props.all.stickyFirstColumn
       }"
@@ -33,7 +33,7 @@
         class="select-none z-1"
         :class="[
           props.all.sortable && col.sort ? 'cursor-pointer' : '',
-          j === 0 && props.all.stickyFirstColumn ? 'sticky left-0 bg-blue-100' : '',
+          j === 0 && props.all.stickyFirstColumn ? 'sticky left-0 ' : '',
           props.all.hasCheckbox && j === 0 && props.all.stickyFirstColumn ? 'left-[52px]' : ''
         ]"
         :style="{

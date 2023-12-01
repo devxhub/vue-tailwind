@@ -46,7 +46,7 @@
               <td
                 v-if="props.hasCheckbox"
                 :class="{
-                  'sticky left-0 bg-blue-100': props.stickyFirstColumn
+                  'sticky left-0': props.stickyFirstColumn
                 }"
               >
                 <div>
@@ -67,7 +67,7 @@
                   :key="col.field"
                   :class="[
                     typeof props.cellClass === 'function' ? cellClass(item) : props.cellClass,
-                    j === 0 && props.stickyFirstColumn ? 'sticky left-0 bg-blue-100' : '',
+                    j === 0 && props.stickyFirstColumn ? 'sticky left-0' : '',
                     props.hasCheckbox && j === 0 && props.stickyFirstColumn ? 'left-[52px]' : '',
                     col.cellClass ? col.cellClass : ''
                   ]"
@@ -227,7 +227,6 @@ const props = withDefaults(
     columns: () => [],
     hasCheckbox: false,
     search: '',
-    columnChooser: false,
     page: 1,
     pageSize: 10,
     pageSizeOptions: () => [10, 20, 30, 50, 100],
