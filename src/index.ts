@@ -1,5 +1,5 @@
 import DButton from './components/DButton.vue'
 import DInput from './components/DInput.vue'
-import DTable from './components/data-table/DTable.vue'
+import DPagination from './components/DPagination.vue'
 
-export default { DButton, DInput, DTable }
+export default { DButton, DInput, DPagination }
