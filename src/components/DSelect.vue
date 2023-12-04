@@ -3,7 +3,7 @@
   <div ref="dropdown" class="relative inline-block w-full">
     <div
       @click="toggleDropdown"
-      class="cursor-pointer border border-gray-300 p-2 rounded-md flex items-center justify-between bg-white"
+      class="cursor-pointer border p-2 flex items-center justify-between bg-white"
     >
       <div
         v-if="clearable && selectedOptions[0]"
@@ -33,7 +33,7 @@
           <div
             v-for="option in selectedOptions"
             :key="option.id"
-            :class="chips ? 'bg-gray-200 rounded-md p-1' : ''"
+            :class="chips ? 'bg-gray-200 p-1' : ''"
           >
             {{ option.label }}
             <span v-if="chips" @click.stop="removeOption(option)" class="ml-1 cursor-pointer"
@@ -64,7 +64,7 @@
     <transition name="fade">
       <div
         v-show="isDropdownOpen"
-        class="absolute w-full bg-white border border-gray-300 rounded-md shadow-md overflow-hidden min-w-[300px]"
+        class="absolute w-full bg-white border border-gray-300 shadow-md overflow-hidden min-w-[300px]"
       >
         <div :options="options" :toggle-option="toggleOption">
           <div
