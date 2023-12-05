@@ -19,7 +19,7 @@ describe('DxhCheckbox.vue', () => {
   it('renders a checkbox with provided props', () => {
     const wrapper = mount(DxhCheckbox, {
       props: {
-        id: 1,
+        id: '1',
         name: 'example',
         value: 'example-value',
         label: 'Example Label',
@@ -31,7 +31,7 @@ describe('DxhCheckbox.vue', () => {
     })
 
     expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
-    expect(wrapper.props('id')).toBe(1)
+    expect(wrapper.props('id')).toBe('1')
     expect(wrapper.props('name')).toBe('example')
     expect(wrapper.props('value')).toBe('example-value')
     expect(wrapper.props('label')).toBe('Example Label')

@@ -20,7 +20,7 @@
 import { defineProps, defineEmits } from 'vue'
 
 defineProps({
-  id: Number,
+  id: String,
   name: String,
   value: String,
   label: String,
