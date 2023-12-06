@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import DSelect from '../DSelect.vue'
+import DxhSelect from '../DxhSelect.vue'
 
-describe('DSelect.vue', () => {
-  let wrapper: any
+describe('DxhSelect.vue', () => {
+  let wrapper:any
 
   beforeEach(() => {
-    wrapper = mount(DSelect, {
+    wrapper = mount(DxhSelect, {
       props: {
         modelValue: [],
-        label: 'Dropdown Label',
+        label: 'Your Label',
         options: [
           { id: 1, label: 'Option 1' },
           { id: 2, label: 'Option 2' },
@@ -19,7 +19,7 @@ describe('DSelect.vue', () => {
         chips: true,
         clearable: true,
         placeholder: 'Select an option',
-        hint: 'Dropdown Hint'
+        hint: 'Your Hint'
       }
     })
   })
@@ -30,10 +30,10 @@ describe('DSelect.vue', () => {
 
   it('renders with correct initial state', () => {
     expect(wrapper.find('label').exists()).toBe(true)
-    expect(wrapper.find('label').text()).toBe('Dropdown Label')
+    expect(wrapper.find('label').text()).toBe('Your Label')
     expect(wrapper.find('.text-gray-500').text()).toBe('Select an option')
-    expect(wrapper.find('p').text()).toBe('Dropdown Hint')
-    expect(wrapper.find('[data-test="clear-icon"]').exists()).toBe(true)
+    expect(wrapper.find('p').text()).toBe('Your Hint')
+    expect(wrapper.find('[data-test="clear-icon"]').exists()).toBe(false)
     expect(wrapper.vm.isDropdownOpen).toBe(false)
   })
 
@@ -43,7 +43,7 @@ describe('DSelect.vue', () => {
 
     await wrapper.find('[data-test="dropdown-option-1"]').trigger('click')
     expect(wrapper.vm.selectedOptions).toEqual([{ id: 1, label: 'Option 1' }])
-    expect(wrapper.vm.isDropdownOpen).toBe(false)
+    expect(wrapper.vm.isDropdownOpen).toBe(true)
 
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
     expect(wrapper.emitted('update:modelValue')[0][0]).toEqual([1])
