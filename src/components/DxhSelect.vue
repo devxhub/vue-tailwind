@@ -111,12 +111,12 @@ interface Option {
 }
 
 const props = defineProps({
-  modelValue: [Array, String, Object],
+  modelValue: [Array, String, Object, Number],
   label: {
     type: String,
     required: false
   },
-  options: [Array, String, Object],
+  options: [Array, String, Object, Number],
   multiple: {
     type: Boolean,
     required: false
