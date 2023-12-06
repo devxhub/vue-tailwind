@@ -85,7 +85,9 @@ interface Props {
   autofocus?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  notFoundContent: 'No data found'
+})
 
 const emit = defineEmits(['change', 'focus', 'blur', 'enter', 'selected'])
 
