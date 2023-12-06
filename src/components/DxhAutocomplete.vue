@@ -1,6 +1,6 @@
 <template>
   <div class="autocomplete">
-    <label v-if="label" class="block">{{ label }}</label>
+    <label v-if="label" class="block" data-test="autocomplete-label">{{ label }}</label>
     <div ref="dropdown">
       <div class="relative">
         <input
@@ -14,12 +14,14 @@
           :disabled="disabled"
           :autofocus="autofocus"
           class="w-full p-2 border border-gray-300"
+          data-test="autocomplete-input"
         />
 
         <div
           v-if="clearable && inputValue"
           @click="clearInput"
           class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
+          data-test="clear-icon"
         >
           <slot name="clear-icon">
             <svg
@@ -36,7 +38,11 @@
         </div>
       </div>
 
-      <div v-if="isDropdownOpen" class="p-2 border border-gray-300 shadow-md bg-white">
+      <div
+        v-if="isDropdownOpen"
+        class="p-2 border border-gray-300 shadow-md bg-white"
+        data-test="dropdown"
+      >
         <slot name="loading" v-if="loading">
           <div class="flex w-full justify-center items-center">
             <Spinner />
@@ -45,7 +51,7 @@
         <div v-if="options.length === 0 && !loading" class="text-center">{{ notFoundContent }}</div>
         <div v-if="options.length > 0 && !loading">
           <div v-for="option in options" :key="getOptionKey(option)" class="cursor-pointer">
-            <button class="block" @click="selectOption(option)">
+            <button class="block" @click="selectOption(option)" data-test="dropdown-option">
               {{ getOptionLabel(option) }}
             </button>
           </div>
@@ -118,7 +124,7 @@ const clearInput = () => {
 const selectOption = (option: Option) => {
   inputValue.value = option.label
   emit('selected', option)
-  isDropdownOpen.value = true
+  isDropdownOpen.value = false
 }
 
 const getOptionKey = (option: Option) => {
