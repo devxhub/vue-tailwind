@@ -1,5 +1,9 @@
 <template>
-  <div class="flex gap-x-2" :class="direction === 'horizontal' ? 'flex-col' : 'flex-row'" data-test="dxh-tabs">
+  <div
+    class="flex gap-x-2"
+    :class="direction === 'horizontal' ? 'flex-col' : 'flex-row'"
+    data-test="dxh-tabs"
+  >
     <div
       class="flex"
       :class="direction === 'horizontal' ? 'flex-row border-b' : 'flex-col border-r min-h-full'"
@@ -37,10 +41,13 @@ const props = defineProps<{
   defaultActive: number | string
 }>()
 
+const emit = defineEmits(['tabClick'])
+
 const activeTab = ref(Number(props.defaultActive) || 1)
 
 const handleTabClick = (id: number) => {
   activeTab.value = id
+  emit('tabClick', id)
 }
 
 const findActiveTabContent = () => {
