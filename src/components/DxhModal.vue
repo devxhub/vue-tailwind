@@ -6,9 +6,8 @@
   >
     <div
       ref="modalRef"
-      class="bg-white p-6 rounded-md relative cursor-auto"
-      :class="[maxWidth, maxHeight]"
-      :style="{ zIndex }"
+      class="bg-white p-6 rounded-md relative cursor-auto min-w-[250px]"
+      :style="{ zIndex, maxWidth: `${maxWidth}px`, maxHeight: `${maxHeight}px` }"
       @keydown.esc="keyboardEsc ? handleCancel : ''"
       data-test="modal-content"
     >
@@ -34,8 +33,8 @@
           </svg>
         </slot>
       </div>
-      <div v-if="title" class="text-lg font-bold mb-4" data-test="modal-title">{{ title }}</div>
-      <div class="mb-4" data-test="modal-body">
+      <div v-if="title" class="text-lg font-bold mr-6" data-test="modal-title">{{ title }}</div>
+      <div class="my-4" data-test="modal-body">
         <slot></slot>
       </div>
       <div v-if="footer" class="flex space-x-2 justify-end" data-test="modal-footer">

@@ -23,8 +23,8 @@ describe('DxhModal.vue', () => {
   })
 
   it('renders modal with title and footer', () => {
-    const title = wrapper.find('.text-lg.font-bold.mb-4')
-    const footer = wrapper.find('.flex.space-x-2.justify-end')
+    const title = wrapper.find('[data-test="modal-title"]')
+    const footer = wrapper.find('[data-test="modal-footer"]')
 
     expect(title.exists()).toBe(true)
     expect(title.text()).toBe('Test Modal')
@@ -50,7 +50,7 @@ describe('DxhModal.vue', () => {
   })
 
   it('closes modal on outside click', async () => {
-    const modalOverlay = wrapper.find('.bg-black.bg-opacity-50')
+    const modalOverlay = wrapper.find('[data-test="modal-overlay"]')
 
     await modalOverlay.trigger('click')
 
