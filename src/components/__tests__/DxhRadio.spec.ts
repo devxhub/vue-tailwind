@@ -17,10 +17,10 @@ describe('DxhRadio.vue', () => {
       }
     })
 
-    expect(wrapper.find('input[type="radio"]').exists()).toBe(true)
-    expect(wrapper.find('input[type="radio"]').element.checked).toBe(false)
-    expect(wrapper.find('label').text()).toBe('Option 1')
-    expect(wrapper.find('p').text()).toBe('Select this option')
+    expect(wrapper.find('[data-test="radio"]').exists()).toBe(true)
+    expect(wrapper.find('[data-test="radio"]').element.checked).toBe(false)
+    expect(wrapper.find('[data-test="label"]').text()).toBe('Option 1')
+    expect(wrapper.find('[data-test="hint"]').text()).toBe('Select this option')
   })
 
   it('emits a change event when the radio button is clicked', async () => {
@@ -37,7 +37,7 @@ describe('DxhRadio.vue', () => {
       }
     })
 
-    await wrapper.find('input[type="radio"]').trigger('change')
+    await wrapper.find('[data-test="radio"]').trigger('change')
 
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted('change')[0]).toEqual([expect.any(Object)])

@@ -8,13 +8,14 @@
       :checked="defaultChecked ? defaultChecked : checked"
       :disabled="disabled"
       :class="{ 'opacity-50 cursor-not-allowed': disabled }"
+      data-test="radio"
       @change="handleChange"
     />
-    <label :for="id" :class="{ 'opacity-50': disabled }" v-if="label">
+    <label :for="id" :class="{ 'opacity-50': disabled }" data-test="label" v-if="label">
       <slot name="label">{{ label }}</slot>
     </label>
   </div>
-  <p v-if="hint">{{ hint }}</p>
+  <p data-test="hint" v-if="hint">{{ hint }}</p>
 </template>
 
 <script setup lang="ts">
