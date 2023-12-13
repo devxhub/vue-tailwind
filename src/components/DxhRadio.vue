@@ -19,16 +19,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  id: String,
-  name: String,
-  value: String,
-  label: String,
-  checked: Boolean,
-  defaultChecked: Boolean,
-  hint: String,
-  disabled: Boolean
-})
+const props = defineProps<{
+  id: string
+  name?: string
+  value?: string
+  label?: string
+  checked: boolean
+  defaultChecked?: boolean
+  hint?: string
+  disabled?: boolean
+}>()
 
 const emit = defineEmits(['change'])
 
