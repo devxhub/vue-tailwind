@@ -70,9 +70,7 @@ interface props {
   clearable?: boolean
 }
 
-const { modelValue } = withDefaults(defineProps<props>(), {
-  type: 'text'
-})
+const { modelValue } = defineProps<props>()
 
 const emit = defineEmits(['focus', 'blur', 'change', 'enter', 'update:modelValue'])
 
