@@ -10,15 +10,15 @@
         <div
           v-if="clearable && selectedOptions[0]"
           class="absolute right-9 top-0 bottom-0 cursor-pointer flex items-center h-full"
-          @click.stop="$emit('update:modelValue', (selectedOptions = []))"
           data-test="clear-icon"
         >
-          <slot name="clear-icon">
+          <slot name="clear" :onClick="clearInput">
             <svg
               class="inline"
               xmlns="http://www.w3.org/2000/svg"
               height="14px"
               viewBox="0 0 512 512"
+              @click="clearInput"
             >
               <path
                 d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"
@@ -47,7 +47,7 @@
             </div>
           </div>
         </div>
-        <slot name="dropdown">
+        <slot name="dropdown" :isOpen="isDropdownOpen">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -76,7 +76,7 @@
               <Spinner />
             </div>
           </slot>
-          <div v-else :options="options" :toggle-option="toggleOption">
+          <div v-else>
             <div
               v-for="option in options"
               :key="option.id"
@@ -84,13 +84,12 @@
               class="p-2 hover:bg-gray-100 cursor-pointer"
               :data-test="'dropdown-option-' + option.id"
             >
-              <slot name="prepend" v-if="multiple">
-                <input
-                  type="checkbox"
-                  :checked="isSelected(option)"
-                  @click.stop="toggleOption(option)"
-                />
-              </slot>
+              <input
+                v-if="multiple"
+                type="checkbox"
+                :checked="isSelected(option)"
+                @click.stop="toggleOption(option)"
+              />
               {{ option.label }}
             </div>
           </div>
@@ -110,38 +109,17 @@ interface Option {
   label: string
 }
 
-const props = defineProps({
-  modelValue: [Array, String, Object, Number],
-  label: {
-    type: String,
-    required: false
-  },
-  options: [Array, String, Object, Number],
-  multiple: {
-    type: Boolean,
-    required: false
-  },
-  loading: {
-    type: Boolean,
-    required: false
-  },
-  chips: {
-    type: Boolean,
-    required: false
-  },
-  clearable: {
-    type: Boolean,
-    required: false
-  },
-  placeholder: {
-    type: String,
-    required: false
-  },
-  hint: {
-    type: String,
-    required: false
-  }
-})
+const props = defineProps<{
+  modelValue: any
+  label?: string
+  options: any
+  multiple?: boolean
+  loading?: boolean
+  chips?: boolean
+  clearable?: boolean
+  placeholder?: string
+  hint?: string
+}>()
 
 const emit = defineEmits(['update:modelValue', 'select'])
 
@@ -156,11 +134,15 @@ const isClickOutside = (event: MouseEvent) => {
   }
 }
 
+const clearInput = () => {
+  emit('update:modelValue', (selectedOptions.value = []))
+}
+
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
 }
 
-const toggleOption = (option: Option) => {
+const toggleOption = (option: any) => {
   if (isSelected(option)) {
     removeOption(option)
   } else {
@@ -184,14 +166,12 @@ const addOption = (option: Option) => {
   emit('update:modelValue', getSelectedValues())
 }
 
-const removeOption = (option: Option) => {
-  selectedOptions.value = selectedOptions.value.filter(
-    (o: { id: string | number }) => o.id !== option.id
-  )
+const removeOption = (option: any) => {
+  selectedOptions.value = selectedOptions.value.filter((o: { id: number }) => o.id !== option.id)
   emit('update:modelValue', getSelectedValues())
 }
 
-const isSelected = (option: Option): boolean => {
+const isSelected = (option: any): boolean => {
   return selectedOptions.value.some((o: { id: string | number }) => o.id === option.id)
 }
 
