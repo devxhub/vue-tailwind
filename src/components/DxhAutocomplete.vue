@@ -19,16 +19,16 @@
 
         <div
           v-if="clearable && inputValue"
-          @click="clearInput"
           class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
           data-test="clear-icon"
         >
-          <slot name="clear-icon">
+          <slot name="clear" @onClick="clearInput">
             <svg
               class="inline"
               xmlns="http://www.w3.org/2000/svg"
               height="14px"
               viewBox="0 0 512 512"
+              @click="clearInput"
             >
               <path
                 d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"
