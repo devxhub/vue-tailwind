@@ -15,7 +15,7 @@
         class="absolute top-6 right-4 cursor-pointer"
         data-test="close-icon"
       >
-        <slot name="close" :onClick="handleClose">
+        <slot name="close" :onClose="handleClose">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -37,12 +37,12 @@
         <slot></slot>
       </div>
       <div v-if="footer" class="flex space-x-2 justify-end" data-test="modal-footer">
-        <slot name="cancel" :onClick="handleCancel">
+        <slot name="cancel" :onCancel="handleCancel">
           <button @click="handleCancel" class="border px-1" data-test="cancel-button">
             Cancel
           </button>
         </slot>
-        <slot name="ok" :onClick="handleOk">
+        <slot name="ok" :onOk="handleOk">
           <button @click="handleOk" class="border px-1" data-test="ok-button">OK</button>
         </slot>
       </div>
