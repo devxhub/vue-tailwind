@@ -54,14 +54,14 @@ describe('DxhModal.vue', () => {
 
     await modalOverlay.trigger('click')
 
-    const cancelEvent = wrapper.emitted('cancel')
+    const cancelEvent = wrapper.emitted('close')
     expect(cancelEvent).toBeTruthy()
   })
 
   it('closes modal on pressing ESC key', async () => {
     await wrapper.trigger('keydown.esc')
 
-    const cancelEvent = wrapper.emitted('cancel')
+    const cancelEvent = wrapper.emitted('close')
     expect(cancelEvent).toBeUndefined()
   })
 })

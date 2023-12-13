@@ -8,15 +8,15 @@
       ref="modalRef"
       class="bg-white p-6 rounded-md relative cursor-auto min-w-[250px]"
       :style="{ zIndex, maxWidth: `${maxWidth}px`, maxHeight: `${maxHeight}px` }"
-      @keydown.esc="keyboardEsc ? handleCancel : ''"
+      @keydown.esc="keyboardEsc ? handleClose : ''"
       data-test="modal-content"
     >
       <div
         class="absolute top-6 right-4 cursor-pointer"
-        @click="handleCancel"
+        @click="handleClose"
         data-test="close-icon"
       >
-        <slot name="close-icon">
+        <slot name="close">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -38,12 +38,12 @@
         <slot></slot>
       </div>
       <div v-if="footer" class="flex space-x-2 justify-end" data-test="modal-footer">
-        <slot name="cancel">
+        <slot name="cancel" :onClick="handleCancel">
           <button @click="handleCancel" class="border px-1" data-test="cancel-button">
             Cancel
           </button>
         </slot>
-        <slot name="ok">
+        <slot name="ok" :onClick="handleOk">
           <button @click="handleOk" class="border px-1" data-test="ok-button">OK</button>
         </slot>
       </div>
@@ -67,7 +67,7 @@ interface Props {
 
 const { title, footer, maxWidth, maxHeight, open, keyboardEsc, zIndex, persistent } =
   defineProps<Props>()
-const emit = defineEmits(['ok', 'cancel'])
+const emit = defineEmits(['ok', 'cancel', 'close'])
 
 const modalRef = ref<HTMLElement | null>(null)
 
@@ -75,7 +75,7 @@ const handleOutsideClick = (event: MouseEvent) => {
   if (!persistent && open) {
     const modalElement = event.target as HTMLElement
     if (!modalRef.value?.contains(modalElement)) {
-      handleCancel()
+      handleClose()
     }
   }
 }
@@ -92,6 +92,10 @@ onUnmounted(() => {
   }
 })
 
+const handleClose = () => {
+  emit('close')
+}
+
 const handleCancel = () => {
   emit('cancel')
 }
@@ -102,7 +106,7 @@ const handleOk = () => {
 
 const handleEscKey = (event: KeyboardEvent) => {
   if (keyboardEsc && event.key === 'Escape') {
-    handleCancel()
+    handleClose()
   }
 }
 </script>
