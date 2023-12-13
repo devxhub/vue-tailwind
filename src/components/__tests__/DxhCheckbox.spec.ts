@@ -6,7 +6,7 @@ describe('DxhCheckbox.vue', () => {
   it('renders a checkbox with default props', () => {
     const wrapper = mount(DxhCheckbox)
 
-    expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
+    expect(wrapper.find('[data-test="checkbox"]').exists()).toBe(true)
     expect(wrapper.props('id')).toBeUndefined()
     expect(wrapper.props('name')).toBeUndefined()
     expect(wrapper.props('value')).toBeUndefined()
@@ -30,7 +30,7 @@ describe('DxhCheckbox.vue', () => {
       }
     })
 
-    expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true)
+    expect(wrapper.find('[data-test="checkbox"]').exists()).toBe(true)
     expect(wrapper.props('id')).toBe('1')
     expect(wrapper.props('name')).toBe('example')
     expect(wrapper.props('value')).toBe('example-value')

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center space-x-1">
+  <div class="flex items-center space-x-1" data-test="checkbox">
     <input
       :id="id"
       type="checkbox"
@@ -8,27 +8,28 @@
       :checked="defaultChecked ? defaultChecked : checked"
       :disabled="disabled"
       @change="handleChange"
+      data-test="checkbox-input"
     />
-    <label :for="id" v-if="label">
-      <slot name="label">{{ label }}</slot>
+    <label :for="id" v-if="label" data-test="checkbox-label">
+      <slot name="label" :label="label">{{ label }}</slot>
     </label>
   </div>
-  <p v-if="hint">{{ hint }}</p>
+  <p v-if="hint" data-test="checkbox-hint">{{ hint }}</p>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
-defineProps({
-  id: String,
-  name: String,
-  value: String,
-  label: String,
-  checked: Boolean,
-  defaultChecked: Boolean,
-  hint: String,
-  disabled: Boolean
-})
+defineProps<{
+  id: string
+  name?: string
+  value?: string
+  label?: string
+  checked: boolean
+  defaultChecked?: boolean
+  hint?: string
+  disabled?: boolean
+}>()
 
 const emit = defineEmits(['change'])
 
