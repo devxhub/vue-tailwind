@@ -22,6 +22,7 @@
             viewBox="0 0 24 24"
             stroke="currentColor"
             class="h-5 w-5"
+            @click="handleClose"
           >
             <path
               stroke-linecap="round"
