@@ -25,7 +25,7 @@
 
     <div v-if="showArrows">
       <div class="absolute top-1/2 left-3 transform -translate-y-1/2">
-        <slot name="prev" :onClick="prevSlide">
+        <slot name="prev" :onPrevClick="prevSlide">
           <button
             @click="prevSlide"
             class="rounded-full p-2 bg-gray-500 hover:bg-gray-700 focus:outline-none focus:ring focus:border-blue-300 transition-all"
@@ -50,7 +50,7 @@
       </div>
 
       <div class="absolute top-1/2 right-3 transform -translate-y-1/2">
-        <slot name="next" :onClick="nextSlide">
+        <slot name="next" :onNextClick="nextSlide">
           <button
             @click="nextSlide"
             class="rounded-full p-2 bg-gray-500 hover:bg-gray-700 focus:outline-none focus:ring focus:border-blue-300 transition-all"
@@ -80,7 +80,7 @@
       class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 cursor-pointer"
     >
       <div v-for="(dot, index) in items" @click="goToSlide(index)" :key="index">
-        <slot name="dots">
+        <slot name="dots" :index="index" :activeIndex="currentIndex">
           <button
             class="w-4 h-4 rounded-full bg-gray-500"
             :class="{
