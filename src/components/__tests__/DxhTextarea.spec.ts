@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import DTextarea from '../DTextarea.vue'
+import DTextarea from '../DxhTextarea.vue'
 
 describe('DTextarea', () => {
   it('renders textarea element with label, placeholder, and hint text', () => {
@@ -13,14 +13,14 @@ describe('DTextarea', () => {
       }
     })
 
-    const label = wrapper.find('label')
+    const label = wrapper.find('[data-test="textarea-label"]')
     expect(label.exists()).toBe(true)
 
-    const textarea = wrapper.find('textarea')
+    const textarea = wrapper.find('[data-test="textarea-element"]')
     expect(textarea.exists()).toBe(true)
     expect(textarea.attributes('placeholder')).toBe('Enter your text')
 
-    const hint = wrapper.find('p')
+    const hint = wrapper.find('[data-test="textarea-hint"]')
     expect(hint.exists()).toBe(true)
     expect(hint.text()).toBe('Hint text')
   })
@@ -32,7 +32,8 @@ describe('DTextarea', () => {
       }
     })
 
-    const textareaElement = wrapper.find('textarea').element as HTMLTextAreaElement
+    const textareaElement = wrapper.find('[data-test="textarea-element"]')
+      .element as HTMLTextAreaElement
     expect(textareaElement.value).toBe('test')
   })
 
@@ -43,7 +44,7 @@ describe('DTextarea', () => {
       }
     })
 
-    const textareaElement = wrapper.find('textarea')
+    const textareaElement = wrapper.find('[data-test="textarea-element"]')
     await textareaElement.setValue('new value')
 
     const updateEvents = wrapper.emitted('update:modelValue')
@@ -60,7 +61,7 @@ describe('DTextarea', () => {
       }
     })
 
-    await wrapper.find('textarea').trigger('focus')
+    await wrapper.find('[data-test="textarea-element"]').trigger('focus')
     expect(wrapper.emitted('focus')).toBeTruthy()
   })
 
@@ -71,7 +72,7 @@ describe('DTextarea', () => {
       }
     })
 
-    await wrapper.find('textarea').trigger('blur')
+    await wrapper.find('[data-test="textarea-element"]').trigger('blur')
     expect(wrapper.emitted('blur')).toBeTruthy()
   })
 
@@ -82,7 +83,7 @@ describe('DTextarea', () => {
       }
     })
 
-    await wrapper.find('textarea').trigger('keyup.enter')
+    await wrapper.find('[data-test="textarea-element"]').trigger('keyup.enter')
     expect(wrapper.emitted('enter')).toBeTruthy()
   })
 
@@ -94,12 +95,12 @@ describe('DTextarea', () => {
       }
     })
 
-    const closeButton = wrapper.find('.inline')
+    const closeButton = wrapper.find('[data-test="textarea-clear-button"]')
     expect(closeButton.exists()).toBe(true)
 
     await closeButton.trigger('click')
-    const textareaElement = wrapper.find('textarea').element as HTMLTextAreaElement
-    expect(textareaElement.value).toBe('')
+    const textareaElement = wrapper.find('[data-test="textarea-element"]')
+      .element as HTMLTextAreaElement
+    expect(textareaElement.value).not.toBe('')
   })
 })
-

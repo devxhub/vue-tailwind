@@ -1,5 +1,5 @@
 import DButton from './components/DButton.vue'
 import DInput from './components/DInput.vue'
-import DTextarea from './components/DTextarea.vue'
+import DxhTextarea from './components/DxhTextarea.vue'
 
-export default { DButton, DInput, DTextarea }
+export default { DButton, DInput, DxhTextarea }
