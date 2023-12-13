@@ -11,11 +11,11 @@
       data-test="radio"
       @change="handleChange"
     />
-    <label :for="id" :class="{ 'opacity-50': disabled }" data-test="label" v-if="label">
-      <slot name="label">{{ label }}</slot>
+    <label v-if="label" :for="id" :class="{ 'opacity-50': disabled }" data-test="label">
+      <slot name="label" :label="label">{{ label }}</slot>
     </label>
   </div>
-  <p data-test="hint" v-if="hint">{{ hint }}</p>
+  <p v-if="hint" data-test="hint">{{ hint }}</p>
 </template>
 
 <script setup lang="ts">
