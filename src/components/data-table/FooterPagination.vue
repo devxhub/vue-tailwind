@@ -27,7 +27,7 @@
           @click="(currentPage = 1), emit('changePage', currentPage)"
         >
           <span v-if="props.firstArrow" v-html="props.firstArrow"> </span>
-          <slot v-else name="first-arrow">
+          <slot v-else name="first">
             <FirstArrow />
           </slot>
         </button>
@@ -38,7 +38,7 @@
           @click="previousPage"
         >
           <span v-if="props.previousArrow" v-html="props.previousArrow"> </span>
-          <slot v-else name="prev-arrow">
+          <slot v-else name="prev">
             <PrevArrow />
           </slot>
         </button>
@@ -66,7 +66,7 @@
           @click="nextPage"
         >
           <span v-if="props.nextArrow" v-html="props.nextArrow"> </span>
-          <slot v-else name="last-arrow">
+          <slot v-else name="last">
             <LastArrow />
           </slot>
         </button>
@@ -79,7 +79,7 @@
           @click="(currentPage = maxPage), emit('changePage', currentPage)"
         >
           <span v-if="props.lastArrow" v-html="props.lastArrow"> </span>
-          <slot v-else name="next-arrow">
+          <slot v-else name="next">
             <NextArrow />
           </slot>
         </button>

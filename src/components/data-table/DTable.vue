@@ -18,17 +18,17 @@
             @filterChange="filterChange"
             @toggleFilterMenu="toggleFilterMenu"
           >
-            <template #check-icon>
-              <slot name="check-icon"></slot>
+            <template #check>
+              <slot name="check"></slot>
             </template>
-            <template #dash-icon>
-              <slot name="dash-icon"></slot>
+            <template #dash>
+              <slot name="dash"></slot>
             </template>
-            <template #sort-icon>
-              <slot name="sort-icon"></slot>
+            <template #sort>
+              <slot name="sort"></slot>
             </template>
-            <template #filter-icon>
-              <slot name="filter-icon"></slot>
+            <template #filter>
+              <slot name="filter"></slot>
             </template>
           </column-header>
         </thead>
@@ -111,16 +111,13 @@
             @filterChange="filterChange"
             @toggleFilterMenu="toggleFilterMenu"
           >
-            <template #check-icon>
-              <slot name="check-icon"></slot>
+            <template #check>
+              <slot name="check"></slot>
             </template>
-            <template #dash-icon>
-              <slot name="dash-icon"></slot>
+            <template #dash>
+              <slot name="dash"></slot>
             </template>
-            <template #sort-icon>
-              <slot name="sort-icon"></slot>
-            </template>
-            <template #filter-icon> <slot name="filter-icon"></slot> </template
+            <template #filter> <slot name="filter"></slot> </template
           ></column-header>
         </tfoot>
       </table>
@@ -156,17 +153,17 @@
       @changePageSize="changePageSize"
       @changePage="changePage"
     >
-      <template #first-arrow>
-        <slot name="first-arrow"></slot>
+      <template #first>
+        <slot name="first"></slot>
       </template>
-      <template #prev-arrow>
-        <slot name="prev-arrow"></slot>
+      <template #prev>
+        <slot name="prev"></slot>
       </template>
-      <template #last-arrow>
-        <slot name="last-arrow"></slot>
+      <template #last>
+        <slot name="last"></slot>
       </template>
-      <template #next-arrow>
-        <slot name="next-arrow"></slot>
+      <template #next>
+        <slot name="next"></slot>
       </template>
     </FooterPagination>
   </div>

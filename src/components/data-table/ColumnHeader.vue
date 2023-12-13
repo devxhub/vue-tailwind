@@ -17,10 +17,10 @@
           @click.stop="emit('selectAll', $event?.target)"
         />
         <div>
-          <slot name="check-icon">
+          <slot name="check">
             <icon-check class="check" />
           </slot>
-          <slot name="dash-icon">
+          <slot name="dash">
             <icon-dash class="intermediate" />
           </slot>
         </div>
@@ -48,35 +48,29 @@
           @click="props.all.sortable && col.sort && emit('sortChange', col.field)"
         >
           {{ col.title }}
-          <span
-            v-if="props.all.sortable && col.sort"
-            class="ml-3 flex items-center"
-            :class="[props.currentSortColumn, props.currentSortDirection]"
-          >
-            <slot name="sort-icon">
-              <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-                <polygon
-                  points="3.11,6.25 10.89,6.25 7,1.75 "
-                  fill="currentColor"
-                  class="bh-text-black/20"
-                  :class="[
-                    currentSortColumn === col.field && currentSortDirection === 'asc'
-                      ? '!text-blue-700'
-                      : ''
-                  ]"
-                ></polygon>
-                <polygon
-                  points="7,12.25 10.89,7.75 3.11,7.75 "
-                  fill="currentColor"
-                  class="bh-text-black/20"
-                  :class="[
-                    currentSortColumn === col.field && currentSortDirection === 'desc'
-                      ? '!text-blue-700'
-                      : ''
-                  ]"
-                ></polygon>
-              </svg>
-            </slot>
+          <span v-if="props.all.sortable && col.sort" class="ml-3 flex items-center">
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+              <polygon
+                points="3.11,6.25 10.89,6.25 7,1.75 "
+                fill="currentColor"
+                class="bh-text-black/20"
+                :class="[
+                  currentSortColumn === col.field && currentSortDirection === 'asc'
+                    ? '!text-blue-700'
+                    : ''
+                ]"
+              ></polygon>
+              <polygon
+                points="7,12.25 10.89,7.75 3.11,7.75 "
+                fill="currentColor"
+                class="bh-text-black/20"
+                :class="[
+                  currentSortColumn === col.field && currentSortDirection === 'desc'
+                    ? '!text-blue-700'
+                    : ''
+                ]"
+              ></polygon>
+            </svg>
           </span>
         </div>
 
@@ -119,7 +113,7 @@
               type="button"
               @click.stop="emit('toggleFilterMenu', col)"
             >
-              <slot name="filter-icon">
+              <slot name="filter">
                 <icon-filter class="w-4 ml-2" />
               </slot>
             </button>
