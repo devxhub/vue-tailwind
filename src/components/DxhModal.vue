@@ -13,10 +13,9 @@
     >
       <div
         class="absolute top-6 right-4 cursor-pointer"
-        @click="handleClose"
         data-test="close-icon"
       >
-        <slot name="close">
+        <slot name="close" :onClick="handleClose">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
