@@ -1,26 +1,25 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import DPagination from '../DPagination.vue'
+import DPagination from '../DxhPagination.vue'
 
 const pageSizeOptions = [10, 20, 30]
 const rows = Array.from({ length: 50 }, (_, i) => ({ id: i + 1, name: `Item ${i + 1}` }))
 
 describe('DPagination.vue', () => {
   it('renders pagination component with default props', () => {
-      const wrapper:any = mount(DPagination)
+    const wrapper = mount(DPagination)
 
-    const paginationContainer = wrapper.find('.pointer-events-none')
-    expect(paginationContainer.exists()).toBe(false)
+    const paginationContainer = wrapper.find('[data-test="pagination"]')
+    expect(paginationContainer.exists()).toBe(true)
 
     expect(wrapper.props('loading')).toBe(false)
     expect(wrapper.props('totalRows')).toBe(0)
-
-    expect(wrapper?.vm?.currentPage).toBe(10)
+    expect(wrapper.vm.currentPage).toBe(10)
     expect(wrapper.vm.currentPageSize).toBe(10)
   })
 
   it('renders pagination component with custom props and rows', () => {
-    const wrapper: any = mount(DPagination, {
+    const wrapper = mount(DPagination, {
       props: {
         loading: false,
         totalRows: rows.length,
@@ -37,8 +36,8 @@ describe('DPagination.vue', () => {
       }
     })
 
-    const paginationContainer = wrapper.find('.pointer-events-none')
-    expect(paginationContainer.exists()).toBe(false)
+    const paginationContainer = wrapper.find('[data-test="pagination"]')
+    expect(paginationContainer.exists()).toBe(true)
 
     expect(wrapper.props('loading')).toBe(false)
     expect(wrapper.props('totalRows')).toBe(rows.length)
@@ -67,14 +66,12 @@ describe('DPagination.vue', () => {
       }
     })
 
-    await wrapper.find('.bh-page-item').trigger('click')
+    await wrapper.find('[data-test="page-number-button"]').trigger('click')
 
     const changePageEvents = wrapper.emitted('changePage')
-    expect(changePageEvents).toBeFalsy()
+    expect(changePageEvents).not.toBeTruthy()
 
     const firstEventPayload = changePageEvents ? changePageEvents[0] : []
-    expect(firstEventPayload).toEqual([
-      /* Expected page number */
-    ])
+    expect(firstEventPayload).toEqual([])
   })
 })

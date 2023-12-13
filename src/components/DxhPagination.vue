@@ -1,8 +1,8 @@
 <template>
-  <div :class="{ 'pointer-events-none': loading }">
+  <div :class="{ 'pointer-events-none': loading }" data-test="pagination">
     <div class="flex items-center flex-wrap flex-col sm:flex-row gap-4">
       <div class="flex items-center bh-pagination-info">
-        <span class="mr-2">
+        <span class="mr-2" data-test="pagination-info">
           {{
             stringFormat(props.paginationInfo, filterRowCount ? offset : 0, limit, filterRowCount)
           }}
@@ -11,6 +11,7 @@
           v-if="props.showPageSize"
           v-model="currentPageSize"
           @change="changePageSize(currentPageSize)"
+          data-test="page-size-select"
         >
           <option v-for="option in props.pageSizeOptions" :value="option" :key="option">
             {{ option }}
@@ -25,9 +26,10 @@
           class="bh-page-item first-page"
           :class="{ disabled: currentPage <= 1 }"
           @click="(currentPage = 1), changePage(currentPage)"
+          data-test="first-page-button"
         >
           <span v-if="props.firstArrow" v-html="props.firstArrow"> </span>
-          <slot v-else name="first-arrow">
+          <slot v-else name="first">
             <FirstArrow />
           </slot>
         </button>
@@ -36,9 +38,10 @@
           class="bh-page-item previous-page"
           :class="{ disabled: currentPage <= 1 }"
           @click="previousPage"
+          data-test="previous-page-button"
         >
           <span v-if="props.previousArrow" v-html="props.previousArrow"> </span>
-          <slot v-else name="prev-arrow">
+          <slot v-else name="prev">
             <PrevArrow />
           </slot>
         </button>
@@ -54,6 +57,7 @@
               'bh-active': page === currentPage
             }"
             @click="movePage(page)"
+            data-test="page-number-button"
           >
             {{ page }}
           </button>
@@ -64,9 +68,10 @@
           class="bh-page-item next-page"
           :class="{ disabled: currentPage >= maxPage }"
           @click="nextPage"
+          data-test="next-page-button"
         >
           <span v-if="props.nextArrow" v-html="props.nextArrow"> </span>
-          <slot v-else name="last-arrow">
+          <slot v-else name="last">
             <LastArrow />
           </slot>
         </button>
@@ -77,9 +82,10 @@
           class="bh-page-item last-page"
           :class="{ disabled: currentPage >= maxPage }"
           @click="(currentPage = maxPage), changePage(currentPage)"
+          data-test="last-page-button"
         >
           <span v-if="props.lastArrow" v-html="props.lastArrow"> </span>
-          <slot v-else name="next-arrow">
+          <slot v-else name="next">
             <NextArrow />
           </slot>
         </button>
@@ -87,6 +93,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script setup lang="ts">
 import { computed, ref, defineAsyncComponent, watch, onMounted } from 'vue'
