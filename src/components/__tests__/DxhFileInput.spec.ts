@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import DFileInput from '../DFileInput.vue'
+import DxhFileInput from '../DxhFileInput.vue'
 
-describe('DFileInput', () => {
+describe('DxhFileInput', () => {
   let wrapper: any
 
   beforeEach(() => {
-    wrapper = mount(DFileInput)
+    wrapper = mount(DxhFileInput)
   })
 
   it('renders correctly with default props', () => {
