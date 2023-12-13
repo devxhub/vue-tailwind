@@ -14,7 +14,6 @@
         :required="required"
         :clearable="clearable"
         class="w-full border px-2 py-1 rounded"
-        :class="resize ? 'resize-y' : 'resize-none'"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
         @change="$emit('change')"
@@ -50,17 +49,13 @@
 import { ref, watch } from 'vue'
 
 interface props {
-  modelValue: string
+  modelValue?: string
   label?: string
   id?: string
   type: string
-  rows?: any
-  cols?: any
-  maxlength?: any
   placeholder?: string
   hint?: string
   disabled?: boolean
-  resize?: boolean
   readonly?: boolean
   autofocus?: boolean
   required?: boolean
