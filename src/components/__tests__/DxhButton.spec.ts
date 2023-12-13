@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Button from '../DButton.vue'
+import Button from '../DxhButton.vue'
 
 describe('DButton.vue', () => {
   it('emits a click event when clicked', async () => {
     const wrapper = mount(Button, {
       props: {
         name: 'Click me',
-        type: 'button',
+        type: 'submit',
         value: 'Click me'
       }
     })

@@ -43,17 +43,17 @@
 import { defineProps, defineEmits } from 'vue'
 import Spinner from '../assets/icons/LoadingSpinner.vue'
 
-const props = defineProps([
-  'name',
-  'type',
-  'value',
-  'href',
-  'target',
-  'disabled',
-  'block',
-  'autofocus',
-  'loading'
-])
+const props = defineProps<{
+  name?: string
+  type?: 'submit' | 'reset'
+  value?: string
+  href?: any
+  target?: string
+  disabled?: boolean
+  block?: boolean
+  autofocus?: boolean
+  loading?: boolean
+}>()
 
 const emit = defineEmits(['click'])
 
