@@ -17,7 +17,7 @@
           :class="{ 'cursor-pointer': collapsible === 'icon' }"
         >
           <span v-if="isItemActive(item.id)">
-            <slot name="collapse-icon">
+            <slot name="collapse">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="14"
@@ -32,7 +32,7 @@
             </slot>
           </span>
           <span v-else>
-            <slot name="expand-icon">
+            <slot name="expand">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="14"
