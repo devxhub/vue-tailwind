@@ -1,6 +1,8 @@
 <template>
-  <label :for="id" class="block" data-test="text-input-label">
-    <span v-if="label">{{ label }}</span>
+  <label :for="id" data-test="text-input-label">
+    <slot name="label" :label="label">
+      <span v-if="label" :class="labelClasses">{{ label }}</span>
+    </slot>
     <div class="relative">
       <input
         :id="id"
@@ -14,6 +16,7 @@
         :required="required"
         :clearable="clearable"
         class="w-full border px-2 py-1 rounded"
+        :class="[{ 'pr-8': clearable }, inputClasses]"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
         @change="$emit('change')"
@@ -23,7 +26,8 @@
       />
       <div
         v-if="clearable && inputValue"
-        class="absolute right-2 top-0 bottom-0 cursor-pointer flex items-center h-full"
+        class="absolute right-3 top-0 bottom-0 cursor-pointer flex items-center h-full"
+        :class="clearButtonClasses"
         data-test="text-input-clear-button"
       >
         <slot name="clear" :onClick="clearInput">
@@ -41,7 +45,7 @@
         </slot>
       </div>
     </div>
-    <p v-if="hint" data-test="text-input-hint">{{ hint }}</p>
+    <p v-if="hint" :class="hintClasses" data-test="text-input-hint">{{ hint }}</p>
   </label>
 </template>
 
@@ -60,6 +64,10 @@ interface props {
   autofocus?: boolean
   required?: boolean
   clearable?: boolean
+  labelClasses?: string
+  inputClasses?: string
+  clearButtonClasses?: string
+  hintClasses?: string
 }
 const { modelValue } = withDefaults(defineProps<props>(), {
   type: 'text'
