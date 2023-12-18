@@ -1,12 +1,20 @@
 <template>
   <div
     class="relative inline-block"
+    :class="{ 'opacity-50': disabled }"
+    ref="dropdown"
     @mouseleave="closeDropdown"
     @mouseenter="openDropdown"
     @click="handleClick"
+    data-test="dropdown-container"
   >
-    <button class="py-2 px-4 border rounded flex items-center">
-      {{ selectedOption || 'Select an option' }}
+    <button
+      :disabled="disabled"
+      :autofocus="autofocus"
+      class="py-2 px-4 border border-gray-400 rounded flex items-center"
+      data-test="dropdown-button"
+    >
+      <span>{{ selectedOption ? selectedOption.option : 'Select an item' }}</span>
       <span class="ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 512 512">
           <path
@@ -16,15 +24,20 @@
       </span>
     </button>
 
-    <div v-if="isOpen" class="absolute top-full left-0 right-0 bg-white border rounded shadow-md" @click.stop="">
+    <div
+      v-if="isOpen"
+      class="absolute top-full left-0 right-0 bg-white border rounded shadow-md"
+      data-test="dropdown-list"
+    >
       <ul class="py-2 px-0">
         <li
-          v-for="option in options"
-          :key="option"
-          @click.stop="selectOption(option)"
+          v-for="item in items"
+          :key="item.id"
+          @click.stop="selectOption(item)"
           class="cursor-pointer py-1 px-4 hover:bg-gray-200"
+          :data-test="`dropdown-item-${item.id}`"
         >
-          {{ option }}
+          {{ item.option }}
         </li>
       </ul>
     </div>
@@ -32,18 +45,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineProps, defineEmits } from 'vue'
+import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{
-  modelValue: string | null
-  options: string[]
+  modelValue: { id: string; option: string } | null
+  items: Array<{ id: string; option: string }>
+  arrow?: boolean
   click?: boolean
+  disabled?: boolean
+  autofocus?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
 
 const isOpen = ref(false)
-const selectedOption = ref<string | null>(null)
+const selectedOption = ref<{ id: string; option: string } | null>(null)
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value
@@ -61,10 +77,10 @@ const closeDropdown = () => {
   }
 }
 
-const selectOption = (option: string) => {
-  selectedOption.value = option
+const selectOption = (item: { id: string; option: string }) => {
+  selectedOption.value = item
   isOpen.value = false
-  emit('update:modelValue', option)
+  emit('update:modelValue', item)
 }
 
 const handleClick = () => {
@@ -79,4 +95,21 @@ watch(
     selectedOption.value = newValue
   }
 )
+
+const dropdown = ref(null)
+
+const isClickOutside = (event: MouseEvent) => {
+  const dropdownElement: any = dropdown.value
+  if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+    isOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', isClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', isClickOutside)
+})
 </script>
