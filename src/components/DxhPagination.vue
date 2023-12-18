@@ -23,8 +23,8 @@
         <button
           v-if="props.showFirstPage"
           type="button"
-          class="bh-page-item first-page"
-          :class="{ disabled: currentPage <= 1 }"
+          class="grid cursor-pointer first-page"
+          :class="{ 'pointer-events-none opacity-50': currentPage <= 1 }"
           @click="(currentPage = 1), changePage(currentPage)"
           data-test="first-page-button"
         >
@@ -35,8 +35,8 @@
         </button>
         <button
           type="button"
-          class="bh-page-item previous-page"
-          :class="{ disabled: currentPage <= 1 }"
+          class="grid cursor-pointer previous-page"
+          :class="{ 'pointer-events-none opacity-50': currentPage <= 1 }"
           @click="previousPage"
           data-test="previous-page-button"
         >
@@ -51,10 +51,9 @@
             v-for="page in paging"
             :key="page"
             type="button"
-            class="bh-page-item"
+            class="grid cursor-pointer"
             :class="{
-              disabled: currentPage === page,
-              'bh-active': page === currentPage
+              'px-1 rounded-sm bg-gray-400': page === currentPage
             }"
             @click="movePage(page)"
             data-test="page-number-button"
@@ -65,8 +64,8 @@
 
         <button
           type="button"
-          class="bh-page-item next-page"
-          :class="{ disabled: currentPage >= maxPage }"
+          class="grid cursor-pointer next-page"
+          :class="{ 'pointer-events-none opacity-50': currentPage >= maxPage }"
           @click="nextPage"
           data-test="next-page-button"
         >
@@ -79,8 +78,8 @@
         <button
           v-if="props.showLastPage"
           type="button"
-          class="bh-page-item last-page"
-          :class="{ disabled: currentPage >= maxPage }"
+          class="grid cursor-pointer last-page"
+          :class="{ 'pointer-events-none opacity-50': currentPage >= maxPage }"
           @click="(currentPage = maxPage), changePage(currentPage)"
           data-test="last-page-button"
         >
@@ -93,8 +92,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script setup lang="ts">
 import { computed, ref, defineAsyncComponent, watch, onMounted } from 'vue'
@@ -235,22 +232,3 @@ const previousPage = () => {
   changePage(currentPage.value)
 }
 </script>
-
-<style scoped>
-.bh-page-item {
-  display: grid;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-.bh-page-item.disabled:not(.bh-active) {
-  pointer-events: none;
-  opacity: 0.5;
-}
-.bh-page-item.bh-active {
-  padding: 0px 5px;
-  border-radius: 3px;
-  background-color: #00050b30;
-}
-</style>
