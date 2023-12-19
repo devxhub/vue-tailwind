@@ -1,5 +1,3 @@
 <template>
-  <main>
-    Vue-Tailwind
-  </main>
+  <main>Vue-Tailwind</main>
 </template>
