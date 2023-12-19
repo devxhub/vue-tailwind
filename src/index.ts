@@ -1,4 +1,4 @@
 import DButton from "./components/DButton.vue"
-import DInput from "./components/DInput.vue"
+import DxhTextInput from './components/DxhTextInput.vue'
 
-export default {DButton, DInput}
+export default { DButton, DxhTextInput }

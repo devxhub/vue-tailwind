@@ -2,4 +2,4 @@
   <main>
     Vue-Tailwind
   </main>
-</template>
+</template> 
